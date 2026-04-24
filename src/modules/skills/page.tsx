@@ -10,7 +10,8 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Switch } from '@/components/ui/switch'
-import { Package, Search, Download, Star, ToggleLeft, Grid3X3, Tag } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Package, Search, Download, Star, ToggleLeft, Grid3X3, Tag, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface Skill {
@@ -180,14 +181,19 @@ export default function SkillsPage() {
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input placeholder="Cari kemahiran…" value={search} onChange={e => setSearch(e.target.value)} className="pl-9" />
             </div>
-            <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)} className="h-9 rounded-md border bg-background px-3 text-sm">
-              <option value="all">Semua Kategori</option>
-              <option value="Communication">Communication</option>
-              <option value="Productivity">Productivity</option>
-              <option value="Data">Data</option>
-              <option value="Finance">Finance</option>
-              <option value="Security">Security</option>
-            </select>
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger className="w-full sm:w-40">
+                <SelectValue placeholder="Kategori" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Semua Kategori</SelectItem>
+                <SelectItem value="Communication">Communication</SelectItem>
+                <SelectItem value="Productivity">Productivity</SelectItem>
+                <SelectItem value="Data">Data</SelectItem>
+                <SelectItem value="Finance">Finance</SelectItem>
+                <SelectItem value="Security">Security</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filteredMarketplace.map(skill => (
@@ -241,13 +247,5 @@ export default function SkillsPage() {
         </TabsContent>
       </Tabs>
     </div>
-  )
-}
-
-function Check({ className }: { className?: string }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
   )
 }

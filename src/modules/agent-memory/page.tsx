@@ -11,6 +11,9 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Progress } from '@/components/ui/progress'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Label } from '@/components/ui/label'
 import { Brain, Search, Plus, Trash2, Eye, ShieldAlert } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -90,6 +93,9 @@ export default function AgentMemoryPage() {
   const [selectedUserId, setSelectedUserId] = useState('USR-001')
   const [showAddForm, setShowAddForm] = useState(false)
   const [newMemory, setNewMemory] = useState({ category: 'peribadi', content: '' })
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [forgetDialogOpen, setForgetDialogOpen] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -117,16 +123,27 @@ export default function AgentMemoryPage() {
     toast.success('Memori berjaya ditambah')
   }
 
-  const handleDeleteMemory = (id: string) => {
-    if (!confirm('Pasti mahu memadam memori ini?')) return
-    setMemories(prev => prev.filter(m => m.id !== id))
-    toast.success('Memori berjaya dipadam')
+  const openDeleteDialog = (id: string) => {
+    setDeletingId(id)
+    setDeleteDialogOpen(true)
   }
 
-  const handleForgetMe = () => {
-    if (!confirm('AMARAN: Ini akan memadam SEMUA memori pengguna ini. Tindakan ini tidak boleh dibatalkan. Teruskan?')) return
+  const handleConfirmDelete = () => {
+    if (!deletingId) return
+    setMemories(prev => prev.filter(m => m.id !== deletingId))
+    toast.success('Memori berjaya dipadam')
+    setDeleteDialogOpen(false)
+    setDeletingId(null)
+  }
+
+  const openForgetDialog = () => {
+    setForgetDialogOpen(true)
+  }
+
+  const handleConfirmForget = () => {
     setMemories(prev => prev.filter(m => m.userId !== selectedUserId))
     toast.success('Semua memori pengguna telah dipadam (PDPA compliance)')
+    setForgetDialogOpen(false)
   }
 
   const uniqueUsers = Array.from(new Set(memories.map(m => m.userId))).map(uid => {
@@ -165,9 +182,14 @@ export default function AgentMemoryPage() {
             <CardContent>
               <div className="flex items-center gap-2 mb-3">
                 <Label className="text-sm">Pengguna:</Label>
-                <select value={selectedUserId} onChange={e => setSelectedUserId(e.target.value)} className="h-8 rounded-md border bg-background px-2 text-sm">
-                  {uniqueUsers.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
-                </select>
+                <Select value={selectedUserId} onValueChange={setSelectedUserId}>
+                  <SelectTrigger className="h-8 w-48">
+                    <SelectValue placeholder="Pilih pengguna" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {uniqueUsers.map(u => <SelectItem key={u.id} value={u.id}>{u.name}</SelectItem>)}
+                  </SelectContent>
+                </Select>
               </div>
               <ScrollArea className="rounded-lg border p-4 bg-muted/30" style={{ maxHeight: '480px' }}>
                 <pre className="text-xs font-mono whitespace-pre-wrap leading-relaxed">{mockMemoryContext}</pre>
@@ -185,7 +207,7 @@ export default function AgentMemoryPage() {
                     <p className="text-[10px] text-muted-foreground">Padam semua memori pengguna ini</p>
                   </div>
                 </div>
-                <Button variant="destructive" size="sm" onClick={handleForgetMe}>Lupa Saya</Button>
+                <Button variant="destructive" size="sm" onClick={openForgetDialog}>Lupa Saya</Button>
               </div>
             </CardContent>
           </Card>
@@ -206,15 +228,20 @@ export default function AgentMemoryPage() {
           {showAddForm && (
             <Card>
               <CardContent className="p-4 space-y-3">
-                <select value={newMemory.category} onChange={e => setNewMemory(p => ({ ...p, category: e.target.value }))} className="h-9 w-full rounded-md border bg-background px-3 text-sm">
-                  <option value="peribadi">Peribadi</option>
-                  <option value="kewangan">Kewangan</option>
-                  <option value="kesihatan">Kesihatan</option>
-                  <option value="keluarga">Keluarga</option>
-                  <option value="pekerjaan">Pekerjaan</option>
-                  <option value="pendidikan">Pendidikan</option>
-                  <option value="preferensi">Preferensi</option>
-                </select>
+                <Select value={newMemory.category} onValueChange={v => setNewMemory(p => ({ ...p, category: v }))}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Kategori" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="peribadi">Peribadi</SelectItem>
+                    <SelectItem value="kewangan">Kewangan</SelectItem>
+                    <SelectItem value="kesihatan">Kesihatan</SelectItem>
+                    <SelectItem value="keluarga">Keluarga</SelectItem>
+                    <SelectItem value="pekerjaan">Pekerjaan</SelectItem>
+                    <SelectItem value="pendidikan">Pendidikan</SelectItem>
+                    <SelectItem value="preferensi">Preferensi</SelectItem>
+                  </SelectContent>
+                </Select>
                 <Input placeholder="Kandungan memori…" value={newMemory.content} onChange={e => setNewMemory(p => ({ ...p, content: e.target.value }))} />
                 <div className="flex gap-2">
                   <Button size="sm" onClick={handleAddMemory} style={{ backgroundColor: '#4B0082' }}>Simpan</Button>
@@ -238,7 +265,7 @@ export default function AgentMemoryPage() {
                       <Badge className={categoryColors[mem.category] || 'bg-gray-100 text-gray-700'}>{mem.category}</Badge>
                       <Badge variant="outline" className="text-[10px]">{mem.source}</Badge>
                     </div>
-                    <Button variant="ghost" size="icon" className="h-7 w-7 text-red-600" onClick={() => handleDeleteMemory(mem.id)}>
+                    <Button variant="ghost" size="icon" className="h-7 w-7 text-red-600" onClick={() => openDeleteDialog(mem.id)} title="Padam">
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
                   </div>
@@ -262,10 +289,40 @@ export default function AgentMemoryPage() {
           </div>
         </div>
       </div>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Padam Memori</AlertDialogTitle>
+            <AlertDialogDescription>
+              Pasti mahu memadam memori ini? Tindakan ini tidak boleh dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeletingId(null)}>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Padam
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={forgetDialogOpen} onOpenChange={setForgetDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Lupa Saya (PDPA)</AlertDialogTitle>
+            <AlertDialogDescription>
+              <strong>AMARAN:</strong> Ini akan memadam SEMUA memori pengguna ini. Tindakan ini tidak boleh dibatalkan. Teruskan?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmForget} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Padam Semua
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
-}
-
-function Label({ className, children }: { className?: string; children: React.ReactNode }) {
-  return <label className={cn('text-sm font-medium', className)}>{children}</label>
 }

@@ -9,11 +9,12 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Users, Search, Plus, Edit, Trash2, UserCheck, Clock } from 'lucide-react'
+import { Users, Search, Plus, Edit, Trash2, UserCheck, Clock, Phone } from 'lucide-react'
 
 interface Volunteer {
   id: string; volunteerNumber: string; name: string; ic: string; phone: string
@@ -27,6 +28,12 @@ const statusColor: Record<string, string> = {
   blacklisted: 'bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300',
 }
 
+const statusLabel: Record<string, string> = {
+  active: 'Aktif',
+  inactive: 'Tidak Aktif',
+  blacklisted: 'Senarai Hitam',
+}
+
 const emptyForm = { name: '', ic: '', phone: '', email: '', address: '', city: '', state: '', occupation: '', skills: '', availability: 'weekend', emergencyContact: '', emergencyPhone: '', status: 'active', notes: '' }
 
 export default function VolunteersPage() {
@@ -38,6 +45,8 @@ export default function VolunteersPage() {
   const [editing, setEditing] = useState<Volunteer | null>(null)
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const fetchItems = async () => {
     setLoading(true)
@@ -50,7 +59,7 @@ export default function VolunteersPage() {
     } catch { toast.error('Gagal memuatkan data sukarelawan') } finally { setLoading(false) }
   }
 
-  useEffect(() => { fetchItems() }, []) 
+  useEffect(() => { fetchItems() }, [])
 
   const handleSave = async () => {
     if (!form.name || !form.ic || !form.phone) { toast.error('Sila isi medan wajib'); return }
@@ -67,9 +76,23 @@ export default function VolunteersPage() {
     } catch (e: unknown) { toast.error(e instanceof Error ? e.message : 'Gagal menyimpan') } finally { setSaving(false) }
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Pasti mahu memadam sukarelawan ini?')) return
-    try { await api.delete('/volunteers', { id }); toast.success('Sukarelawan berjaya dipadam'); fetchItems() } catch { toast.error('Gagal memadam') }
+  const openDeleteDialog = (id: string) => {
+    setDeletingId(id)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!deletingId) return
+    try {
+      await api.delete('/volunteers', { id: deletingId })
+      toast.success('Sukarelawan berjaya dipadam')
+      fetchItems()
+    } catch {
+      toast.error('Gagal memadam')
+    } finally {
+      setDeleteDialogOpen(false)
+      setDeletingId(null)
+    }
   }
 
   const activeCount = items.filter(v => v.status === 'active').length
@@ -103,7 +126,8 @@ export default function VolunteersPage() {
         <Button variant="outline" onClick={fetchItems}>Cari</Button>
       </div>
 
-      <div className="rounded-lg border">
+      {/* Desktop Table */}
+      <div className="hidden md:block rounded-lg border">
         <Table>
           <TableHeader><TableRow>
             <TableHead>No.</TableHead><TableHead>Nama</TableHead><TableHead className="hidden md:table-cell">Telefon</TableHead><TableHead className="hidden lg:table-cell">Kemahiran</TableHead><TableHead className="hidden md:table-cell">Jam</TableHead><TableHead>Status</TableHead><TableHead className="text-right">Tindakan</TableHead>
@@ -118,16 +142,74 @@ export default function VolunteersPage() {
                 <TableCell className="hidden md:table-cell text-xs">{v.phone}</TableCell>
                 <TableCell className="hidden lg:table-cell text-xs">{v.skills || '—'}</TableCell>
                 <TableCell className="hidden md:table-cell">{v.totalHours}j</TableCell>
-                <TableCell><Badge className={statusColor[v.status] || ''}>{v.status}</Badge></TableCell>
+                <TableCell><Badge className={statusColor[v.status] || ''}>{statusLabel[v.status] || v.status}</Badge></TableCell>
                 <TableCell className="text-right"><div className="flex items-center justify-end gap-1">
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => { setEditing(v); setForm({ name: v.name, ic: v.ic, phone: v.phone, email: v.email || '', address: '', city: '', state: '', occupation: v.occupation || '', skills: v.skills || '', availability: v.availability || 'weekend', emergencyContact: '', emergencyPhone: '', status: v.status, notes: '' }); setDialogOpen(true) }}><Edit className="h-3.5 w-3.5" /></Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => handleDelete(v.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8" title="Edit" onClick={() => { setEditing(v); setForm({ name: v.name, ic: v.ic, phone: v.phone, email: v.email || '', address: '', city: '', state: '', occupation: v.occupation || '', skills: v.skills || '', availability: v.availability || 'weekend', emergencyContact: '', emergencyPhone: '', status: v.status, notes: '' }); setDialogOpen(true) }}><Edit className="h-3.5 w-3.5" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" title="Padam" onClick={() => openDeleteDialog(v.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
                 </div></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
+
+      {/* Mobile Card List */}
+      <div className="md:hidden space-y-3">
+        {items.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+            <Users className="h-12 w-12 mb-4 opacity-40" />
+            <p className="text-lg font-medium">Tiada data sukarelawan</p>
+            <p className="text-sm">Cuba ubah carian atau tapisan anda</p>
+          </div>
+        ) : items.map(v => (
+          <Card key={v.id}>
+            <CardContent className="p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="font-semibold truncate">{v.name}</p>
+                    <Badge className={`shrink-0 text-[10px] px-1.5 py-0 ${statusColor[v.status] || ''}`}>
+                      {statusLabel[v.status] || v.status}
+                    </Badge>
+                  </div>
+                  <p className="font-mono text-xs text-muted-foreground mt-0.5">{v.volunteerNumber}</p>
+                  <div className="mt-2 space-y-1 text-sm text-muted-foreground">
+                    <p className="flex items-center gap-2"><Phone className="h-3 w-3" />{v.phone}</p>
+                    {v.skills && <p className="flex items-center gap-2"><span className="text-xs">🎯</span>{v.skills}</p>}
+                    <p className="flex items-center gap-2"><Clock className="h-3 w-3" />{v.totalHours}j</p>
+                  </div>
+                </div>
+                <div className="flex gap-1 shrink-0">
+                  <Button variant="ghost" size="icon" className="h-8 w-8" title="Edit" onClick={() => { setEditing(v); setForm({ name: v.name, ic: v.ic, phone: v.phone, email: v.email || '', address: '', city: '', state: '', occupation: v.occupation || '', skills: v.skills || '', availability: v.availability || 'weekend', emergencyContact: '', emergencyPhone: '', status: v.status, notes: '' }); setDialogOpen(true) }}>
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" title="Padam" onClick={() => openDeleteDialog(v.id)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Padam Sukarelawan</AlertDialogTitle>
+            <AlertDialogDescription>
+              Pasti mahu memadam sukarelawan ini? Tindakan ini tidak boleh dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-rose-600 hover:bg-rose-700 focus:ring-rose-600">
+              Padam
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">

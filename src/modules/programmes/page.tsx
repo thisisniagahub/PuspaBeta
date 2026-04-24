@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -42,6 +43,8 @@ export default function ProgrammesPage() {
   const [editing, setEditing] = useState<Programme | null>(null)
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const fetchItems = async () => {
     setLoading(true)
@@ -72,9 +75,14 @@ export default function ProgrammesPage() {
     } catch (e: unknown) { toast.error(e instanceof Error ? e.message : 'Gagal menyimpan') } finally { setSaving(false) }
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Pasti mahu memadam program ini?')) return
-    try { await api.delete('/programmes', { id }); toast.success('Program berjaya dipadam'); fetchItems() } catch { toast.error('Gagal memadam') }
+  const openDeleteDialog = (id: string) => {
+    setDeletingId(id)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!deletingId) return
+    try { await api.delete('/programmes', { id: deletingId }); toast.success('Program berjaya dipadam'); setDeleteDialogOpen(false); setDeletingId(null); fetchItems() } catch { toast.error('Gagal memadam') }
   }
 
   const activeCount = items.filter(p => p.status === 'active').length
@@ -129,7 +137,7 @@ export default function ProgrammesPage() {
               </div>
               <div className="flex items-center justify-end gap-1 pt-2 border-t">
                 <Button variant="ghost" size="sm" className="h-8 gap-1" onClick={() => { setEditing(p); setForm({ name: p.name, description: p.description || '', category: p.category, status: p.status, startDate: p.startDate?.split('T')[0] || '', endDate: p.endDate?.split('T')[0] || '', location: p.location || '', targetBeneficiaries: p.targetBeneficiaries || 0, budget: p.budget, notes: p.notes || '' }); setDialogOpen(true) }}><Edit className="h-3 w-3" /> Edit</Button>
-                <Button variant="ghost" size="sm" className="h-8 gap-1 text-rose-600" onClick={() => handleDelete(p.id)}><Trash2 className="h-3 w-3" /> Padam</Button>
+                <Button variant="ghost" size="sm" className="h-8 gap-1 text-rose-600" title="Padam" onClick={() => openDeleteDialog(p.id)}><Trash2 className="h-3 w-3" /> Padam</Button>
               </div>
             </CardContent>
           </Card>
@@ -160,6 +168,23 @@ export default function ProgrammesPage() {
           <DialogFooter><Button variant="outline" onClick={() => setDialogOpen(false)}>Batal</Button><Button onClick={handleSave} disabled={saving}>{saving ? 'Menyimpan…' : 'Simpan'}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Padam Program</AlertDialogTitle>
+            <AlertDialogDescription>
+              Pasti mahu memadam program ini? Tindakan ini tidak boleh diundur.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeletingId(null)}>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Padam
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

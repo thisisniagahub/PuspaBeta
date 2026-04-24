@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { FileText, Search, Plus, Edit, Trash2, Eye, Clock, AlertCircle, CheckCircle2 } from 'lucide-react'
 
 interface Case {
@@ -49,6 +50,8 @@ export default function CasesPage() {
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
   const [viewCase, setViewCase] = useState<Case | null>(null)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const fetchItems = async () => {
     setLoading(true)
@@ -63,7 +66,7 @@ export default function CasesPage() {
     } catch { toast.error('Gagal memuatkan data kes') } finally { setLoading(false) }
   }
 
-  useEffect(() => { fetchItems() }, []) 
+  useEffect(() => { fetchItems() }, [])
 
   const handleSave = async () => {
     if (!form.title) { toast.error('Sila isi tajuk kes'); return }
@@ -80,9 +83,14 @@ export default function CasesPage() {
     } catch (e: unknown) { toast.error(e instanceof Error ? e.message : 'Gagal menyimpan') } finally { setSaving(false) }
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Pasti mahu memadam kes ini?')) return
-    try { await api.delete('/cases', { id }); toast.success('Kes berjaya dipadam'); fetchItems() } catch { toast.error('Gagal memadam') }
+  const openDeleteDialog = (id: string) => {
+    setDeletingId(id)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleDelete = async () => {
+    if (!deletingId) return
+    try { await api.delete('/cases', { id: deletingId }); toast.success('Kes berjaya dipadam'); setDeleteDialogOpen(false); setDeletingId(null); fetchItems() } catch { toast.error('Gagal memadam') }
   }
 
   const openEdit = (c: Case) => {
@@ -123,7 +131,8 @@ export default function CasesPage() {
         <Button variant="outline" onClick={fetchItems}>Cari</Button>
       </div>
 
-      <div className="rounded-lg border">
+      {/* Desktop Table */}
+      <div className="hidden md:block rounded-lg border">
         <Table>
           <TableHeader><TableRow>
             <TableHead>No. Kes</TableHead><TableHead>Tajuk</TableHead><TableHead className="hidden md:table-cell">Kategori</TableHead><TableHead>Keutamaan</TableHead><TableHead className="hidden md:table-cell">Jumlah</TableHead><TableHead>Status</TableHead><TableHead className="text-right">Tindakan</TableHead>
@@ -140,14 +149,47 @@ export default function CasesPage() {
                 <TableCell className="hidden md:table-cell">{fmtCurrency(c.amount)}</TableCell>
                 <TableCell><Badge className={statusColor[c.status] || ''}>{c.status}</Badge></TableCell>
                 <TableCell className="text-right"><div className="flex items-center justify-end gap-1">
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setViewCase(c)}><Eye className="h-3.5 w-3.5" /></Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(c)}><Edit className="h-3.5 w-3.5" /></Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => handleDelete(c.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setViewCase(c)} title="Lihat"><Eye className="h-3.5 w-3.5" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(c)} title="Edit"><Edit className="h-3.5 w-3.5" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => openDeleteDialog(c.id)} title="Padam"><Trash2 className="h-3.5 w-3.5" /></Button>
                 </div></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Mobile Card List */}
+      <div className="md:hidden space-y-3">
+        {items.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+            <FileText className="h-12 w-12 mb-4 opacity-40" />
+            <p className="text-lg font-medium">Tiada data kes</p>
+            <p className="text-sm">Cuba ubah carian atau tapisan anda</p>
+          </div>
+        ) : items.map(c => (
+          <Card key={c.id}>
+            <CardContent className="p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="font-mono text-xs text-muted-foreground">{c.caseNumber}</p>
+                  <p className="font-semibold mt-0.5 truncate">{c.title}</p>
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    <span className={`text-sm font-medium ${priorityColor[c.priority] || ''}`}>{c.priority}</span>
+                    <Badge className={statusColor[c.status] || ''}>{c.status}</Badge>
+                    <Badge variant="outline">{c.category}</Badge>
+                  </div>
+                  <p className="mt-2 text-sm font-medium">{fmtCurrency(c.amount)}</p>
+                </div>
+                <div className="flex gap-1 shrink-0">
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setViewCase(c)} title="Lihat"><Eye className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(c)} title="Edit"><Edit className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => openDeleteDialog(c.id)} title="Padam"><Trash2 className="h-4 w-4" /></Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       <Sheet open={!!viewCase} onOpenChange={() => setViewCase(null)}>
@@ -182,6 +224,20 @@ export default function CasesPage() {
           <DialogFooter><Button variant="outline" onClick={() => setDialogOpen(false)}>Batal</Button><Button onClick={handleSave} disabled={saving}>{saving ? 'Menyimpan…' : 'Simpan'}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation AlertDialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Padam Kes</AlertDialogTitle>
+            <AlertDialogDescription>Pasti mahu memadam kes ini? Tindakan ini tidak boleh dibatalkan.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-rose-600 hover:bg-rose-700 focus:ring-rose-600">Padam</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

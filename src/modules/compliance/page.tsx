@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Progress } from '@/components/ui/progress'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -32,6 +33,8 @@ export default function CompliancePage() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [form, setForm] = useState({ category: 'registration', item: '', description: '', notes: '' })
   const [saving, setSaving] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const fetchAll = async () => {
     setLoading(true)
@@ -69,9 +72,14 @@ export default function CompliancePage() {
     } catch { toast.error('Gagal menambah') } finally { setSaving(false) }
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Padam item ini?')) return
-    try { await api.delete('/compliance', { id }); toast.success('Item berjaya dipadam'); fetchAll() } catch { toast.error('Gagal memadam') }
+  const openDeleteDialog = (id: string) => {
+    setDeletingId(id)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!deletingId) return
+    try { await api.delete('/compliance', { id: deletingId }); toast.success('Item berjaya dipadam'); setDeleteDialogOpen(false); setDeletingId(null); fetchAll() } catch { toast.error('Gagal memadam') }
   }
 
   const completed = items.filter(i => i.isCompleted).length
@@ -126,7 +134,7 @@ export default function CompliancePage() {
                         <p className={cn('text-sm', item.isCompleted && 'line-through text-muted-foreground')}>{item.item}</p>
                         {item.description && <p className="text-xs text-muted-foreground mt-0.5">{item.description}</p>}
                       </div>
-                      <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0 text-rose-600" onClick={() => handleDelete(item.id)}><Trash2 className="h-3 w-3" /></Button>
+                      <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0 text-rose-600" title="Padam" onClick={() => openDeleteDialog(item.id)}><Trash2 className="h-3 w-3" /></Button>
                     </div>
                   ))}
                 </div>
@@ -182,6 +190,23 @@ export default function CompliancePage() {
           <DialogFooter><Button variant="outline" onClick={() => setDialogOpen(false)}>Batal</Button><Button onClick={handleAdd} disabled={saving}>{saving ? 'Menyimpan…' : 'Simpan'}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Padam Item</AlertDialogTitle>
+            <AlertDialogDescription>
+              Padam item ini? Tindakan ini tidak boleh diundur.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeletingId(null)}>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Padam
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

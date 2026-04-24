@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -43,6 +44,8 @@ export default function DisbursementsPage() {
   const [editing, setEditing] = useState<Disbursement | null>(null)
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const fetchItems = async () => {
     setLoading(true)
@@ -72,9 +75,23 @@ export default function DisbursementsPage() {
     } catch (e: unknown) { toast.error(e instanceof Error ? e.message : 'Gagal menyimpan') } finally { setSaving(false) }
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Pasti mahu memadam pembayaran ini?')) return
-    try { await api.delete('/disbursements', { id }); toast.success('Pembayaran berjaya dipadam'); fetchItems() } catch { toast.error('Gagal memadam') }
+  const openDeleteDialog = (id: string) => {
+    setDeletingId(id)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!deletingId) return
+    try {
+      await api.delete('/disbursements', { id: deletingId })
+      toast.success('Pembayaran berjaya dipadam')
+      fetchItems()
+    } catch {
+      toast.error('Gagal memadam')
+    } finally {
+      setDeleteDialogOpen(false)
+      setDeletingId(null)
+    }
   }
 
   const totalAmount = items.reduce((s, d) => s + d.amount, 0)
@@ -109,7 +126,8 @@ export default function DisbursementsPage() {
         <Button variant="outline" onClick={fetchItems}>Cari</Button>
       </div>
 
-      <div className="rounded-lg border">
+      {/* Desktop Table */}
+      <div className="rounded-lg border hidden md:block">
         <Table>
           <TableHeader><TableRow>
             <TableHead>No.</TableHead><TableHead>Penerima</TableHead><TableHead>Tujuan</TableHead><TableHead>Jumlah</TableHead><TableHead>Status</TableHead><TableHead className="hidden md:table-cell">Tarikh</TableHead><TableHead className="text-right">Tindakan</TableHead>
@@ -126,13 +144,46 @@ export default function DisbursementsPage() {
                 <TableCell><Badge className={statusColor[d.status] || ''}>{d.status}</Badge></TableCell>
                 <TableCell className="hidden md:table-cell text-xs">{d.createdAt ? new Date(d.createdAt).toLocaleDateString('ms-MY') : '—'}</TableCell>
                 <TableCell className="text-right"><div className="flex items-center justify-end gap-1">
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => { setEditing(d); setForm({ amount: d.amount, purpose: d.purpose, status: d.status, recipientName: d.recipientName, recipientIC: d.recipientIC || '', recipientBank: '', recipientAcc: '', scheduledDate: d.scheduledDate?.split('T')[0] || '', notes: d.notes || '' }); setDialogOpen(true) }}><Edit className="h-3.5 w-3.5" /></Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => handleDelete(d.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8" title="Edit" onClick={() => { setEditing(d); setForm({ amount: d.amount, purpose: d.purpose, status: d.status, recipientName: d.recipientName, recipientIC: d.recipientIC || '', recipientBank: '', recipientAcc: '', scheduledDate: d.scheduledDate?.split('T')[0] || '', notes: d.notes || '' }); setDialogOpen(true) }}><Edit className="h-3.5 w-3.5" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" title="Padam" onClick={() => openDeleteDialog(d.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
                 </div></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Mobile Card List */}
+      <div className="md:hidden space-y-3">
+        {items.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+            <DollarSign className="h-12 w-12 mb-4 opacity-40" />
+            <p className="text-lg font-medium">Tiada data pembayaran</p>
+            <p className="text-sm">Cuba ubah carian atau tapisan anda</p>
+          </div>
+        ) : items.map(d => (
+          <Card key={d.id}>
+            <CardContent className="p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="font-semibold truncate">{d.recipientName}</p>
+                    <Badge className={`shrink-0 text-[10px] px-1.5 py-0 ${statusColor[d.status] || ''}`}>{d.status}</Badge>
+                  </div>
+                  <p className="font-mono text-xs text-muted-foreground mt-0.5">{d.disbursementNumber}</p>
+                  <div className="mt-2 space-y-1 text-sm text-muted-foreground">
+                    <p>{d.purpose}</p>
+                    <p className="font-bold text-foreground">{fmtCurrency(d.amount)}</p>
+                  </div>
+                </div>
+                <div className="flex gap-1 shrink-0">
+                  <Button variant="ghost" size="icon" className="h-8 w-8" title="Edit" onClick={() => { setEditing(d); setForm({ amount: d.amount, purpose: d.purpose, status: d.status, recipientName: d.recipientName, recipientIC: d.recipientIC || '', recipientBank: '', recipientAcc: '', scheduledDate: d.scheduledDate?.split('T')[0] || '', notes: d.notes || '' }); setDialogOpen(true) }}><Edit className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" title="Padam" onClick={() => openDeleteDialog(d.id)}><Trash2 className="h-4 w-4" /></Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -150,6 +201,19 @@ export default function DisbursementsPage() {
           <DialogFooter><Button variant="outline" onClick={() => setDialogOpen(false)}>Batal</Button><Button onClick={handleSave} disabled={saving}>{saving ? 'Menyimpan…' : 'Simpan'}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Padam Pembayaran</AlertDialogTitle>
+            <AlertDialogDescription>Pasti mahu memadam pembayaran ini? Tindakan ini tidak boleh dikembalikan.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-rose-600 hover:bg-rose-700">Padam</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

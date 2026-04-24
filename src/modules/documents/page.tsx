@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -33,6 +34,8 @@ export default function DocumentsPage() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [form, setForm] = useState({ title: '', description: '', category: 'operations', fileName: 'document.pdf', fileSize: 0 })
   const [saving, setSaving] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const fetchItems = async () => {
     setLoading(true)
@@ -61,9 +64,14 @@ export default function DocumentsPage() {
     } catch { toast.error('Gagal memuat naik') } finally { setSaving(false) }
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Padam dokumen ini?')) return
-    try { await api.delete('/documents', { id }); toast.success('Dokumen berjaya dipadam'); fetchItems() } catch { toast.error('Gagal memadam') }
+  const openDeleteDialog = (id: string) => {
+    setDeletingId(id)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!deletingId) return
+    try { await api.delete('/documents', { id: deletingId }); toast.success('Dokumen berjaya dipadam'); setDeleteDialogOpen(false); setDeletingId(null); fetchItems() } catch { toast.error('Gagal memadam') }
   }
 
   const formatSize = (b: number) => b >= 1048576 ? `${(b / 1048576).toFixed(1)} MB` : b >= 1024 ? `${(b / 1024).toFixed(1)} KB` : `${b} B`
@@ -112,7 +120,7 @@ export default function DocumentsPage() {
                 <TableCell className="hidden md:table-cell text-xs">{d.fileName}</TableCell>
                 <TableCell className="hidden md:table-cell text-xs">{formatSize(d.fileSize)}</TableCell>
                 <TableCell className="hidden lg:table-cell">v{d.version}</TableCell>
-                <TableCell className="text-right"><Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => handleDelete(d.id)}><Trash2 className="h-3.5 w-3.5" /></Button></TableCell>
+                <TableCell className="text-right"><Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" title="Padam" onClick={() => openDeleteDialog(d.id)}><Trash2 className="h-3.5 w-3.5" /></Button></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -130,6 +138,23 @@ export default function DocumentsPage() {
           <DialogFooter><Button variant="outline" onClick={() => setDialogOpen(false)}>Batal</Button><Button onClick={handleAdd} disabled={saving}>{saving ? 'Menyimpan…' : 'Muat Naik'}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Padam Dokumen</AlertDialogTitle>
+            <AlertDialogDescription>
+              Padam dokumen ini? Tindakan ini tidak boleh diundur.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeletingId(null)}>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Padam
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

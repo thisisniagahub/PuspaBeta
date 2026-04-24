@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -46,6 +47,8 @@ export default function DonationsPage() {
   const [editing, setEditing] = useState<Donation | null>(null)
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const fetchItems = async () => {
     setLoading(true)
@@ -77,9 +80,23 @@ export default function DonationsPage() {
     } catch (e: unknown) { toast.error(e instanceof Error ? e.message : 'Gagal menyimpan') } finally { setSaving(false) }
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Pasti mahu memadam donasi ini?')) return
-    try { await api.delete('/donations', { id }); toast.success('Donasi berjaya dipadam'); fetchItems() } catch { toast.error('Gagal memadam') }
+  const openDeleteDialog = (id: string) => {
+    setDeletingId(id)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!deletingId) return
+    try {
+      await api.delete('/donations', { id: deletingId })
+      toast.success('Donasi berjaya dipadam')
+      fetchItems()
+    } catch {
+      toast.error('Gagal memadam')
+    } finally {
+      setDeleteDialogOpen(false)
+      setDeletingId(null)
+    }
   }
 
   const openEdit = (d: Donation) => {
@@ -120,7 +137,8 @@ export default function DonationsPage() {
         <Button variant="outline" onClick={fetchItems}>Cari</Button>
       </div>
 
-      <div className="rounded-lg border">
+      {/* Desktop Table */}
+      <div className="hidden md:block rounded-lg border">
         <Table>
           <TableHeader><TableRow>
             <TableHead>No. Donasi</TableHead><TableHead>Penderma</TableHead><TableHead>Jumlah</TableHead><TableHead className="hidden md:table-cell">Jenis Dana</TableHead><TableHead className="hidden lg:table-cell">Kaedah</TableHead><TableHead>Status</TableHead><TableHead className="hidden md:table-cell">Tarikh</TableHead><TableHead className="text-right">Tindakan</TableHead>
@@ -138,14 +156,64 @@ export default function DonationsPage() {
                 <TableCell><Badge className={statusColor[d.status] || ''}>{d.status}</Badge></TableCell>
                 <TableCell className="hidden md:table-cell text-xs">{new Date(d.donatedAt).toLocaleDateString('ms-MY')}</TableCell>
                 <TableCell className="text-right"><div className="flex items-center justify-end gap-1">
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(d)}><Edit className="h-3.5 w-3.5" /></Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => handleDelete(d.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(d)} title="Edit"><Edit className="h-3.5 w-3.5" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => openDeleteDialog(d.id)} title="Padam"><Trash2 className="h-3.5 w-3.5" /></Button>
                 </div></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
+
+      {/* Mobile Card List */}
+      <div className="md:hidden space-y-3">
+        {items.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+            <HandCoins className="h-12 w-12 mb-4 opacity-40" />
+            <p className="text-lg font-medium">Tiada data donasi</p>
+            <p className="text-sm">Cuba ubah carian atau tapisan anda</p>
+          </div>
+        ) : items.map(d => (
+          <Card key={d.id}>
+            <CardContent className="p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="font-semibold truncate">{d.isAnonymous ? 'Anonim' : d.donorName}</p>
+                    <Badge className={`shrink-0 text-[10px] px-1.5 py-0 ${statusColor[d.status] || ''}`}>
+                      {d.status}
+                    </Badge>
+                  </div>
+                  <p className="text-xs font-mono text-muted-foreground mt-0.5">{d.donationNumber}</p>
+                  <p className="font-bold mt-1">{fmtCurrency(d.amount)}</p>
+                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <Badge variant="outline">{fundLabels[d.fundType] || d.fundType}</Badge>
+                    <span>{methodLabels[d.method] || d.method}</span>
+                  </div>
+                </div>
+                <div className="flex gap-1 shrink-0">
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(d)} title="Edit"><Edit className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => openDeleteDialog(d.id)} title="Padam"><Trash2 className="h-4 w-4" /></Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Padam Donasi</AlertDialogTitle>
+            <AlertDialogDescription>Pasti mahu memadam donasi ini? Tindakan ini tidak boleh dibatalkan.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-rose-600 hover:bg-rose-700 focus:ring-rose-600">Padam</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-lg">

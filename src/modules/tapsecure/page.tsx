@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Shield, Smartphone, Monitor, Tablet, Lock, Unlock, Activity, Trash2 } from 'lucide-react'
 
 interface DeviceBinding { id: string; deviceName?: string; deviceType?: string; isPrimary: boolean; isTrusted: boolean; isActive: boolean; ipAddress?: string; lastUsedAt: string; boundAt: string }
@@ -23,6 +24,8 @@ export default function TapSecurePage() {
   const [settings, setSettings] = useState<SecuritySettings | null>(null)
   const [logs, setLogs] = useState<SecurityLog[]>([])
   const [loading, setLoading] = useState(true)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const fetchAll = async () => {
     setLoading(true)
@@ -49,9 +52,14 @@ export default function TapSecurePage() {
     } catch { toast.error('Gagal mengemas kini tetapan') }
   }
 
-  const removeDevice = async (id: string) => {
-    if (!confirm('Buang peranti ini?')) return
-    try { await api.delete('/tapsecure/devices', { id }); toast.success('Peranti berjaya dibuang'); fetchAll() } catch { toast.error('Gagal membuang peranti') }
+  const openDeleteDialog = (id: string) => {
+    setDeletingId(id)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!deletingId) return
+    try { await api.delete('/tapsecure/devices', { id: deletingId }); toast.success('Peranti berjaya dibuang'); fetchAll() } catch { toast.error('Gagal membuang peranti') } finally { setDeleteDialogOpen(false); setDeletingId(null) }
   }
 
   if (loading) return <div className="space-y-4 p-6"><Skeleton className="h-48 rounded-xl" /><Skeleton className="h-48 rounded-xl" /><Skeleton className="h-48 rounded-xl" /></div>
@@ -77,7 +85,7 @@ export default function TapSecurePage() {
                     </div>
                     <div className="flex items-center gap-1">
                       <Badge variant={d.isTrusted ? 'default' : 'secondary'} className="text-[10px]">{d.isTrusted ? 'Dipercayai' : 'Belum Disahkan'}</Badge>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => removeDevice(d.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => openDeleteDialog(d.id)} title="Buang"><Trash2 className="h-3.5 w-3.5" /></Button>
                     </div>
                   </div>
                 )
@@ -132,6 +140,23 @@ export default function TapSecurePage() {
           )}
         </CardContent>
       </Card>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Buang Peranti</AlertDialogTitle>
+            <AlertDialogDescription>
+              Adakah anda pasti ingin membuang peranti ini? Peranti ini perlu didaftarkan semula untuk akses.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeletingId(null)}>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Buang
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

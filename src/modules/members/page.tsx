@@ -456,7 +456,7 @@ export default function MembersPage() {
             </div>
             <div className="flex flex-wrap gap-2">
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-[160px]">
+                <SelectTrigger className="w-full sm:w-[160px]">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -468,7 +468,7 @@ export default function MembersPage() {
               </Select>
 
               <Select value={maritalFilter} onValueChange={setMaritalFilter}>
-                <SelectTrigger className="w-[170px]">
+                <SelectTrigger className="w-full sm:w-[170px]">
                   <SelectValue placeholder="Status Perkahwinan" />
                 </SelectTrigger>
                 <SelectContent>
@@ -481,7 +481,7 @@ export default function MembersPage() {
               </Select>
 
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-[200px]">
+                <SelectTrigger className="w-full sm:w-[200px]">
                   <SelectValue placeholder="Susun mengikut" />
                 </SelectTrigger>
                 <SelectContent>

@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Textarea } from '@/components/ui/textarea'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Building2, MapPin, Users, Plus, Edit, Trash2, Save } from 'lucide-react'
@@ -25,6 +26,8 @@ export default function AdminPage() {
   const [branchDialog, setBranchDialog] = useState(false)
   const [branchForm, setBranchForm] = useState({ name: '', code: '', city: '', state: '', phone: '' })
   const [saving, setSaving] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const fetchData = async () => {
     setLoading(true)
@@ -54,9 +57,14 @@ export default function AdminPage() {
     try { await api.post('/branches', branchForm); toast.success('Cawangan berjaya ditambah'); setBranchDialog(false); setBranchForm({ name: '', code: '', city: '', state: '', phone: '' }); fetchData() } catch { toast.error('Gagal menambah') } finally { setSaving(false) }
   }
 
-  const deleteBranch = async (id: string) => {
-    if (!confirm('Padam cawangan ini?')) return
-    try { await api.delete('/branches', { id }); toast.success('Cawangan berjaya dipadam'); fetchData() } catch { toast.error('Gagal memadam') }
+  const openDeleteDialog = (id: string) => {
+    setDeletingId(id)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!deletingId) return
+    try { await api.delete('/branches', { id: deletingId }); toast.success('Cawangan berjaya dipadam'); setDeleteDialogOpen(false); setDeletingId(null); fetchData() } catch { toast.error('Gagal memadam') }
   }
 
   if (loading) return <div className="space-y-4 p-6"><Skeleton className="h-60 rounded-xl" /><Skeleton className="h-48 rounded-xl" /></div>
@@ -103,7 +111,7 @@ export default function AdminPage() {
                     <TableCell className="hidden md:table-cell text-xs">{b.city || '—'}</TableCell>
                     <TableCell className="hidden md:table-cell text-xs">{b.phone || '—'}</TableCell>
                     <TableCell><Badge variant={b.isActive ? 'default' : 'secondary'}>{b.isActive ? 'Aktif' : 'Tidak Aktif'}</Badge></TableCell>
-                    <TableCell className="text-right"><Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" onClick={() => deleteBranch(b.id)}><Trash2 className="h-3.5 w-3.5" /></Button></TableCell>
+                    <TableCell className="text-right"><Button variant="ghost" size="icon" className="h-8 w-8 text-rose-600" title="Padam" onClick={() => openDeleteDialog(b.id)}><Trash2 className="h-3.5 w-3.5" /></Button></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -132,6 +140,23 @@ export default function AdminPage() {
           <DialogFooter><Button variant="outline" onClick={() => setBranchDialog(false)}>Batal</Button><Button onClick={addBranch} disabled={saving}>{saving ? 'Menyimpan…' : 'Simpan'}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Padam Cawangan</AlertDialogTitle>
+            <AlertDialogDescription>
+              Padam cawangan ini? Tindakan ini tidak boleh diundur.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeletingId(null)}>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Padam
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

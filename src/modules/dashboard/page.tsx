@@ -280,7 +280,7 @@ export default function DashboardPage() {
           <h2 className="text-sm font-semibold" style={{ color: '#4B0082' }}>Pipeline Workflow</h2>
         </div>
         <div className="overflow-x-auto rounded-xl border bg-card p-4">
-          <div className="flex min-w-[600px] items-center gap-1">
+          <div className="flex items-center gap-1 min-w-[420px] sm:min-w-[600px]">
             {pipelineSteps.map((step, idx) => (
               <div key={step.label} className="flex flex-1 items-center gap-1">
                 <div className={cn('flex flex-1 items-center gap-2 rounded-lg border px-3 py-2 transition-all', step.done ? 'border-emerald-200 bg-emerald-50/50 dark:border-emerald-800 dark:bg-emerald-950/20' : 'border-border bg-muted/30')}>

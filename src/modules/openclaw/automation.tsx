@@ -10,6 +10,7 @@ import { Switch } from '@/components/ui/switch'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -27,6 +28,8 @@ export default function AutomationPage() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [form, setForm] = useState({ title: '', description: '', kind: 'one_time', expr: '', domain: 'general' })
   const [saving, setSaving] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   useEffect(() => {
     async function load() {
@@ -57,9 +60,14 @@ export default function AutomationPage() {
     } catch { toast.error('Gagal menambah') } finally { setSaving(false) }
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Padam automasi ini?')) return
-    try { await api.delete('/ops/automations', { id }); toast.success('Automasi berjaya dipadam') } catch { toast.error('Gagal memadam') }
+  const openDeleteDialog = (id: string) => {
+    setDeletingId(id)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!deletingId) return
+    try { await api.delete('/ops/automations', { id: deletingId }); toast.success('Automasi berjaya dipadam') } catch { toast.error('Gagal memadam') } finally { setDeleteDialogOpen(false); setDeletingId(null) }
   }
 
   const toggleAutomation = (id: string) => {
@@ -108,7 +116,7 @@ export default function AutomationPage() {
                 <TableCell>
                   <div className="flex items-center gap-1">
                     <Switch checked={a.isEnabled} onCheckedChange={() => toggleAutomation(a.id)} />
-                    <Button variant="ghost" size="icon" className="h-7 w-7 text-rose-600" onClick={() => handleDelete(a.id)}><Trash2 className="h-3 w-3" /></Button>
+                    <Button variant="ghost" size="icon" className="h-7 w-7 text-rose-600" onClick={() => openDeleteDialog(a.id)} title="Padam"><Trash2 className="h-3 w-3" /></Button>
                   </div>
                 </TableCell>
               </TableRow>
@@ -131,6 +139,23 @@ export default function AutomationPage() {
           <DialogFooter><Button variant="outline" onClick={() => setDialogOpen(false)}>Batal</Button><Button onClick={handleAdd} disabled={saving}>{saving ? 'Menyimpan…' : 'Simpan'}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Padam Automasi</AlertDialogTitle>
+            <AlertDialogDescription>
+              Adakah anda pasti ingin memadam automasi ini? Tindakan ini tidak boleh dibatalkan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeletingId(null)}>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Padam
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
