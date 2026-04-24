@@ -39,6 +39,16 @@ import SedekahJumaat from '@/modules/sedekah-jumaat/page'
 import Docs from '@/modules/docs/page'
 import AgihanBulan from '@/modules/agihan-bulan/page'
 import OpsConductor from '@/modules/ops-conductor/page'
+import Triage from '@/modules/triage/page'
+import Notifications from '@/modules/notifications/page'
+import MultiChannel from '@/modules/multi-channel/page'
+import Onboarding from '@/modules/onboarding/page'
+import AutomationRules from '@/modules/automation-rules/page'
+import Predictive from '@/modules/predictive/page'
+import Skills from '@/modules/skills/page'
+import AgentMemory from '@/modules/agent-memory/page'
+import MultiAgent from '@/modules/multi-agent/page'
+import AuditTrail from '@/modules/audit-trail/page'
 
 function PageLoader() {
   return (
@@ -86,6 +96,16 @@ const viewLabels: Record<string, string> = {
   docs: 'Panduan',
   'agihan-bulan': 'Agihan Bulanan',
   'ops-conductor': 'Ops Conductor',
+  triage: 'Enjin Triage',
+  notifications: 'Notifikasi',
+  'multi-channel': 'Berbilang Saluran',
+  onboarding: 'Onboarding',
+  'automation-rules': 'Peraturan Automasi',
+  predictive: 'Analisis Ramalan',
+  skills: 'Pasar Kemahiran',
+  'agent-memory': 'Memori Ejen',
+  'multi-agent': 'Berbilang Ejen',
+  'audit-trail': 'Jejak Audit',
 }
 
 function ViewRenderer({ view }: { view: string }) {
@@ -117,6 +137,16 @@ function ViewRenderer({ view }: { view: string }) {
     case 'docs': return <Docs />
     case 'agihan-bulan': return <AgihanBulan />
     case 'ops-conductor': return <OpsConductor />
+    case 'triage': return <Triage />
+    case 'notifications': return <Notifications />
+    case 'multi-channel': return <MultiChannel />
+    case 'onboarding': return <Onboarding />
+    case 'automation-rules': return <AutomationRules />
+    case 'predictive': return <Predictive />
+    case 'skills': return <Skills />
+    case 'agent-memory': return <AgentMemory />
+    case 'multi-agent': return <MultiAgent />
+    case 'audit-trail': return <AuditTrail />
     default: return <Dashboard />
   }
 }
@@ -200,7 +230,7 @@ export default function Home() {
               <span className="text-muted-foreground">— Pertubuhan Urus Peduli Asnaf KL & Selangor</span>
             </div>
             <div className="flex items-center gap-3">
-              <span>v2.1.0</span>
+              <span>v3.0.0</span>
               <span>•</span>
               <span>PPM-006-14-14032020</span>
             </div>

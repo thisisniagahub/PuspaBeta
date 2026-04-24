@@ -15,7 +15,8 @@ import {
   UserCheck, FolderOpen, ScanFace, Smartphone, BookOpen,
   CalendarDays, Package, ChevronLeft, ChevronRight, Menu,
   Cpu, Plug, Globe, Terminal, Wrench, Zap,
-  ArrowRightLeft, LayoutGrid
+  ArrowRightLeft, LayoutGrid, Siren, Bell, MessageSquare,
+  UserPlus, BarChart3, Brain, ShieldCheck
 } from 'lucide-react'
 import type { ViewId } from '@/types'
 
@@ -94,6 +95,40 @@ const ALL_GROUPS: NavGroup[] = [
       { id: 'reports', label: 'Laporan Kewangan', icon: FileBarChart, roles: ['admin', 'developer'] },
       { id: 'ekyc', label: 'eKYC', icon: ScanFace, roles: ['admin', 'developer'] },
       { id: 'tapsecure', label: 'TapSecure', icon: Smartphone, roles: ['admin', 'developer'] },
+    ],
+  },
+  {
+    title: 'Fasa 1 — Triage & Saluran',
+    roles: ['admin', 'developer'],
+    items: [
+      { id: 'triage', label: 'Enjin Triage', icon: Siren, roles: ['admin', 'developer'] },
+      { id: 'notifications', label: 'Notifikasi', icon: Bell, roles: ['admin', 'developer'] },
+      { id: 'multi-channel', label: 'Berbilang Saluran', icon: MessageSquare, roles: ['admin', 'developer'] },
+    ],
+  },
+  {
+    title: 'Fasa 2 — Automasi & Ramalan',
+    roles: ['admin', 'developer'],
+    items: [
+      { id: 'onboarding', label: 'Onboarding', icon: UserPlus, roles: ['admin', 'developer'] },
+      { id: 'automation-rules', label: 'Peraturan Automasi', icon: Zap, roles: ['admin', 'developer'] },
+      { id: 'predictive', label: 'Analisis Ramalan', icon: BarChart3, roles: ['admin', 'developer'] },
+    ],
+  },
+  {
+    title: 'Fasa 3 — Ejen & Kemahiran',
+    roles: ['admin', 'developer'],
+    items: [
+      { id: 'skills', label: 'Pasar Kemahiran', icon: Package, roles: ['admin', 'developer'] },
+      { id: 'agent-memory', label: 'Memori Ejen', icon: Brain, roles: ['admin', 'developer'] },
+      { id: 'multi-agent', label: 'Berbilang Ejen', icon: LayoutGrid, roles: ['admin', 'developer'] },
+    ],
+  },
+  {
+    title: 'Fasa 4 — Audit & Transparansi',
+    roles: ['admin', 'developer'],
+    items: [
+      { id: 'audit-trail', label: 'Jejak Audit', icon: ShieldCheck, roles: ['admin', 'developer'] },
     ],
   },
   {
@@ -369,7 +404,7 @@ function SidebarFooter({ collapsed }: { collapsed: boolean }) {
           collapsed ? 'max-h-0 max-w-0 opacity-0' : 'max-h-10 max-w-[180px] opacity-100',
         )}>
           <span className="text-[11px] font-semibold whitespace-nowrap" style={{ color: BRAND_COLOR }}>PUSPA KL & Selangor</span>
-          <span className="text-[10px] text-muted-foreground whitespace-nowrap">v2.1.0</span>
+          <span className="text-[10px] text-muted-foreground whitespace-nowrap">v3.0.0</span>
         </div>
       </div>
     </div>

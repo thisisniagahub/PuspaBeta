@@ -788,3 +788,248 @@ model AutomationJob {
   @@index([isEnabled])
   @@index([nextRunAt])
 }
+
+// ============ FASA 1: TRIAGE ENGINE ============
+
+model TriageResult {
+  id                String   @id @default(cuid())
+  caseId            String   @unique
+  priority          String   @default("P3") // P1, P2, P3, P4, P5
+  score             Int      @default(0)
+  reason            String?
+  suggestedProgramme String?
+  autoAssigned      Boolean  @default(false)
+  assignedVolunteerId String?
+  triagedBy         String   @default("ai-agent") // ai-agent, manual
+  triagedAt         DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([priority])
+  @@index([caseId])
+}
+
+// ============ FASA 1: ENHANCED NOTIFICATIONS ============
+
+model NotificationLog {
+  id          String   @id @default(cuid())
+  type        String   // case.created, donation.received, disbursement.approved, programme.reminder, ekyc.pending, compliance.overdue
+  channel     String   @default("in-app") // in-app, whatsapp, telegram, email, sms
+  recipient   String   // phone, email, chatId, userId
+  title       String
+  message     String
+  priority    String   @default("medium") // low, medium, high, urgent
+  status      String   @default("pending") // pending, sent, delivered, failed
+  data        String?  // JSON
+  sentAt      DateTime?
+  failedReason String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([type])
+  @@index([channel])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model NotificationPreference {
+  id        String  @id @default(cuid())
+  userId    String  @unique
+  channels  String  @default("{}")
+  events    String  @default("{}")
+  quietStart String? // "22:00"
+  quietEnd   String? // "08:00"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============ FASA 1: MULTI-CHANNEL MESSAGES ============
+
+model ChannelMessage {
+  id          String   @id @default(cuid())
+  channel     String   // whatsapp, telegram, web, sms
+  direction   String   // inbound, outbound
+  fromId      String?  // sender identifier
+  toId        String?  // recipient identifier
+  content     String
+  messageType String   @default("text") // text, image, document, location, template
+  metadata    String?  // JSON
+  agentName   String?  // which agent handled this
+  sessionId   String?
+  isProcessed Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([channel])
+  @@index([direction])
+  @@index([isProcessed])
+  @@index([createdAt])
+}
+
+// ============ FASA 2: ONBOARDING ============
+
+model OnboardingSession {
+  id            String   @id @default(cuid())
+  sessionNumber String   @unique // OB-XXXX
+  channel       String   @default("web") // web, whatsapp, telegram
+  currentStep   Int      @default(0)
+  totalSteps    Int      @default(7)
+  data          String   @default("{}") // JSON — collected form data
+  status        String   @default("active") // active, completed, abandoned, expired
+  memberId      String?  // linked after completion
+  phone         String?
+  icNumber      String?
+  name          String?
+  expiresAt     DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([status])
+  @@index([channel])
+  @@index([sessionNumber])
+}
+
+// ============ FASA 2: AUTOMATION RULES ============
+
+model AutomationRule {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  triggerEvent String  // case.created, case.idle, donation.received, disbursement.approved, volunteer.hours_completed, schedule.daily, schedule.weekly
+  condition   String?  // e.g. "idleHours > 48"
+  actions     String   // JSON array of actions
+  isEnabled   Boolean  @default(true)
+  priority    Int      @default(0)
+  lastTriggeredAt DateTime?
+  triggerCount Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([triggerEvent])
+  @@index([isEnabled])
+}
+
+// ============ FASA 2: PREDICTIVE ANALYTICS ============
+
+model PredictionData {
+  id              String   @id @default(cuid())
+  modelType       String   // demand_forecast, distribution_optimizer, fund_projection
+  period          String   // "2026-07"
+  inputSnapshot   String   // JSON — input data used
+  prediction      String   // JSON — prediction output
+  confidence      Float    @default(0)
+  actualValue     String?  // JSON — actual values (for backtesting)
+  accuracy        Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([modelType])
+  @@index([period])
+}
+
+// ============ FASA 3: CLAWHUB SKILLS ============
+
+model InstalledSkill {
+  id          String   @id @default(cuid())
+  skillId     String   @unique
+  name        String
+  version     String   @default("1.0.0")
+  category    String   // communication, productivity, data, finance, security
+  description String?
+  author      String?
+  permissions String?  // JSON
+  config      String?  // JSON — skill-specific config
+  isEnabled   Boolean  @default(true)
+  installedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([isEnabled])
+}
+
+// ============ FASA 3: AGENT MEMORY ============
+
+model AgentMemory {
+  id          String   @id @default(cuid())
+  userId      String
+  category    String   // personal, case, programme, donation, preference
+  content     String
+  source      String   @default("user") // user, system, inference
+  confidence  Float    @default(1.0)
+  accessCount Int      @default(0)
+  lastAccessed DateTime @default(now())
+  expiresAt   DateTime? // optional expiry
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([category])
+  @@index([lastAccessed])
+}
+
+// ============ FASA 3: MULTI-AGENT CONFIG ============
+
+model AgentConfig {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  displayName   String
+  role          String   // kewangan, operasi, compliance, asnaf
+  description   String?
+  model         String   @default("glm-4")
+  channels      String   @default("[]") // JSON array of channels
+  skills        String   @default("[]") // JSON array of skill IDs
+  systemPrompt  String?
+  memoryEnabled Boolean  @default(true)
+  maxTokens     Int      @default(4096)
+  temperature   Float    @default(0.7)
+  isActive      Boolean  @default(true)
+  lastActiveAt  DateTime?
+  totalSessions Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([role])
+  @@index([isActive])
+}
+
+// ============ FASA 4: BLOCKCHAIN AUDIT TRAIL ============
+
+model AuditTrail {
+  id            String   @id @default(cuid())
+  txHash        String   @unique
+  txType        String   // donation, disbursement, transfer, refund
+  fromEntity    String
+  toEntity      String
+  amount        Float
+  currency      String   @default("MYR")
+  fundType      String   // zakat, sadaqah, waqf, infaq, general
+  status        String   @default("pending") // pending, confirmed, verified, disputed
+  blockNumber   Int?
+  metadata      String?  // JSON
+  verifiedAt    DateTime?
+  verifiedBy    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([txType])
+  @@index([fundType])
+  @@index([status])
+  @@index([txHash])
+}
+
+model SmartContractLog {
+  id                String   @id @default(cuid())
+  disbursementId    String?
+  contractType      String   // auto_release, conditional_approval, kyc_required, fund_sufficient
+  conditions        String   // JSON array of conditions
+  evaluationResult  String   // JSON — result of evaluation
+  canRelease        Boolean  @default(false)
+  evaluatedAt       DateTime @default(now())
+  evaluatedBy       String   @default("smart-contract-engine")
+  createdAt         DateTime @default(now())
+
+  @@index([disbursementId])
+  @@index([contractType])
+  @@index([canRelease])
+}

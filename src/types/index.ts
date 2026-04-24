@@ -6,6 +6,10 @@ export type ViewId =
   | 'openclaw-terminal' | 'openclaw-agents' | 'openclaw-models' | 'openclaw-automation'
   | 'ekyc' | 'tapsecure' | 'sedekah-jumaat' | 'docs'
   | 'agihan-bulan' | 'ops-conductor'
+  | 'triage' | 'notifications' | 'multi-channel'
+  | 'onboarding' | 'automation-rules' | 'predictive'
+  | 'skills' | 'agent-memory' | 'multi-agent'
+  | 'audit-trail'
 
 export interface NavItem {
   id: ViewId
