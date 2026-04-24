@@ -67,4 +67,4 @@ server.log
 /upload/
 
 # Z scripts
-/.zscripts/mini-services/
+/.zscripts/
