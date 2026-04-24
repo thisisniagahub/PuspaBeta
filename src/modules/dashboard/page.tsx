@@ -15,6 +15,9 @@ import {
   ArrowRight, TrendingUp, TrendingDown, Clock, CheckCircle2,
   ClipboardList, Package,
 } from 'lucide-react'
+import Counter from '@/components/reactbits/Counter'
+import GradientText from '@/components/reactbits/GradientText'
+import AnimatedContent from '@/components/reactbits/AnimatedContent'
 import { useAppStore } from '@/stores/app-store'
 import { cn } from '@/lib/utils'
 import {
@@ -78,7 +81,7 @@ function activityIcon(t: string) {
   }
 }
 
-interface StatCardProps { title: string; value: string; subtitle?: string; icon: React.ReactNode; accent: string; iconBg: string; trend?: number }
+interface StatCardProps { title: string; value: React.ReactNode; subtitle?: string; icon: React.ReactNode; accent: string; iconBg: string; trend?: number }
 
 function StatCard({ title, value, subtitle, icon, accent, iconBg, trend }: StatCardProps) {
   return (
@@ -208,6 +211,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       {/* Hero Banner */}
+      <AnimatedContent distance={30} direction="vertical" duration={0.4}>
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#4B0082] via-[#6B21A8] to-[#7C3AED] p-6 text-white shadow-xl shadow-purple-900/30 sm:p-8">
         <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/5 blur-2xl" />
         <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-purple-400/10 blur-2xl" />
@@ -217,17 +221,17 @@ export default function DashboardPage() {
               <Image src="/puspa-logo-official.png" alt="PUSPA Logo" width={52} height={52} className="object-contain" priority />
             </div>
             <div className="min-w-0">
-              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{getGreeting()}, Admin</h1>
+              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl"><GradientText colors={['#4B0082', '#8B5CF6', '#4B0082']} animationSpeed={4}>{getGreeting()}, Admin</GradientText></h1>
               <p className="mt-1 text-sm text-purple-100 sm:text-base">Ringkasan data dan statistik terkini organisasi anda.</p>
               <p className="mt-1 text-xs text-purple-200/70">Pertubuhan Urus Peduli Asnaf KL &amp; Selangor &bull; PPM-006-14-14032020</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
             {[
-              { icon: <Users className="h-4 w-4 text-white" />, val: fmtNum(stats?.totalMembers ?? 0), lbl: 'Ahli Asnaf' },
-              { icon: <HandCoins className="h-4 w-4 text-white" />, val: fmtCurrency(stats?.totalDonations ?? 0), lbl: 'Jumlah Donasi' },
-              { icon: <Heart className="h-4 w-4 text-white" />, val: String(stats?.activeProgrammes ?? 0), lbl: 'Program Aktif' },
-              { icon: <UserCheck className="h-4 w-4 text-white" />, val: String(stats?.activeVolunteers ?? 0), lbl: 'Sukarelawan' },
+              { icon: <Users className="h-4 w-4 text-white" />, val: <Counter value={stats?.totalMembers ?? 0} fontSize={18} gradientHeight={0} fontWeight={700} textColor="white" />, lbl: 'Ahli Asnaf' },
+              { icon: <HandCoins className="h-4 w-4 text-white" />, val: <span className="flex items-center">RM <Counter value={stats?.totalDonations ?? 0} fontSize={18} gradientHeight={0} fontWeight={700} textColor="white" /></span>, lbl: 'Jumlah Donasi' },
+              { icon: <Heart className="h-4 w-4 text-white" />, val: <Counter value={stats?.activeProgrammes ?? 0} fontSize={18} gradientHeight={0} fontWeight={700} textColor="white" />, lbl: 'Program Aktif' },
+              { icon: <UserCheck className="h-4 w-4 text-white" />, val: <Counter value={stats?.activeVolunteers ?? 0} fontSize={18} gradientHeight={0} fontWeight={700} textColor="white" />, lbl: 'Sukarelawan' },
             ].map(p => (
               <div key={p.lbl} className="flex items-center gap-2 rounded-xl bg-white/15 px-3 py-2 backdrop-blur-sm ring-1 ring-white/10 sm:px-4 sm:py-2.5">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 sm:h-9 sm:w-9">{p.icon}</div>
@@ -237,15 +241,18 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+      </AnimatedContent>
 
       {/* Stat Cards */}
+      <AnimatedContent distance={30} direction="vertical" duration={0.4} delay={0.1}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <StatCard title="Jumlah Ahli Asnaf" value={fmtNum(stats?.totalMembers ?? 0)} icon={<Users className="h-6 w-6" />} accent="#7c3aed" iconBg="rgba(124,58,237,0.1)" trend={stats?.trendMembers} />
-        <StatCard title="Program Aktif" value={String(stats?.activeProgrammes ?? 0)} subtitle="dalam pelaksanaan" icon={<Heart className="h-6 w-6" />} accent="#059669" iconBg="rgba(5,150,105,0.1)" trend={stats?.trendProgrammes} />
-        <StatCard title="Jumlah Donasi" value={fmtCurrency(stats?.totalDonations ?? 0)} subtitle="setakat ini" icon={<HandCoins className="h-6 w-6" />} accent="#d97706" iconBg="rgba(217,119,6,0.1)" trend={stats?.trendDonations} />
-        <StatCard title="Sukarelawan Aktif" value={fmtNum(stats?.activeVolunteers ?? 0)} subtitle="telah berdaftar" icon={<UserCheck className="h-6 w-6" />} accent="#0ea5e9" iconBg="rgba(14,165,233,0.1)" trend={stats?.trendVolunteers} />
-        <StatCard title="Skor Compliance" value={`${skor}%`} subtitle={complianceLabel(skor)} icon={<ShieldCheck className="h-6 w-6" />} accent={skor >= 80 ? '#059669' : skor >= 50 ? '#d97706' : '#e11d48'} iconBg={skor >= 80 ? 'rgba(5,150,105,0.1)' : skor >= 50 ? 'rgba(217,119,6,0.1)' : 'rgba(225,29,72,0.1)'} trend={stats?.trendCompliance} />
+        <StatCard title="Jumlah Ahli Asnaf" value={<Counter value={stats?.totalMembers ?? 0} fontSize={24} gradientHeight={0} fontWeight={700} />} icon={<Users className="h-6 w-6" />} accent="#7c3aed" iconBg="rgba(124,58,237,0.1)" trend={stats?.trendMembers} />
+        <StatCard title="Program Aktif" value={<Counter value={stats?.activeProgrammes ?? 0} fontSize={24} gradientHeight={0} fontWeight={700} />} subtitle="dalam pelaksanaan" icon={<Heart className="h-6 w-6" />} accent="#059669" iconBg="rgba(5,150,105,0.1)" trend={stats?.trendProgrammes} />
+        <StatCard title="Jumlah Donasi" value={<span className="inline-flex items-center">RM <Counter value={stats?.totalDonations ?? 0} fontSize={24} gradientHeight={0} fontWeight={700} /></span>} subtitle="setakat ini" icon={<HandCoins className="h-6 w-6" />} accent="#d97706" iconBg="rgba(217,119,6,0.1)" trend={stats?.trendDonations} />
+        <StatCard title="Sukarelawan Aktif" value={<Counter value={stats?.activeVolunteers ?? 0} fontSize={24} gradientHeight={0} fontWeight={700} />} subtitle="telah berdaftar" icon={<UserCheck className="h-6 w-6" />} accent="#0ea5e9" iconBg="rgba(14,165,233,0.1)" trend={stats?.trendVolunteers} />
+        <StatCard title="Skor Compliance" value={<span className="inline-flex items-center"><Counter value={skor} fontSize={24} gradientHeight={0} fontWeight={700} /><span>%</span></span>} subtitle={complianceLabel(skor)} icon={<ShieldCheck className="h-6 w-6" />} accent={skor >= 80 ? '#059669' : skor >= 50 ? '#d97706' : '#e11d48'} iconBg={skor >= 80 ? 'rgba(5,150,105,0.1)' : skor >= 50 ? 'rgba(217,119,6,0.1)' : 'rgba(225,29,72,0.1)'} trend={stats?.trendCompliance} />
       </div>
+      </AnimatedContent>
 
       {/* Tindakan Seterusnya */}
       <div>

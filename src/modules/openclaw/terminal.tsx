@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Terminal, ChevronRight } from 'lucide-react'
+import ScrambledText from '@/components/reactbits/ScrambledText'
 
 interface LogEntry { type: 'input' | 'output' | 'error' | 'system'; text: string; time: string }
 
@@ -56,7 +57,7 @@ export default function TerminalPage() {
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
         <Terminal className="h-6 w-6" style={{ color: '#4B0082' }} />
-        <h1 className="text-2xl font-bold">Console Operator</h1>
+        <h1 className="text-2xl font-bold"><ScrambledText scrambleChars=".:!@#$%^&*">Console Operator</ScrambledText></h1>
       </div>
 
       <Card className="bg-gray-950 text-gray-100 border-gray-800">

@@ -15,6 +15,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { HandCoins, Search, Plus, Edit, Trash2, DollarSign, Clock, CheckCircle, AlertTriangle } from 'lucide-react'
+import AnimatedContent from '@/components/reactbits/AnimatedContent'
 
 interface Donation {
   id: string; donationNumber: string; donorName: string; donorIC?: string; donorEmail?: string
@@ -111,6 +112,7 @@ export default function DonationsPage() {
 
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
+      <AnimatedContent distance={30} direction="vertical" duration={0.4}>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Pengurusan Donasi</h1>
         <Button onClick={() => { setEditing(null); setForm(emptyForm); setDialogOpen(true) }} className="gap-2"><Plus className="h-4 w-4" /> Tambah Donasi</Button>
@@ -129,6 +131,7 @@ export default function DonationsPage() {
           </CardContent></Card>
         ))}
       </div>
+      </AnimatedContent>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><Input placeholder="Cari penderma, no. donasi…" value={search} onChange={e => setSearch(e.target.value)} className="pl-9" /></div>

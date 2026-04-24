@@ -15,6 +15,8 @@ import {
   CheckCircle2, ArrowUpRight, Lightbulb, UserCheck,
   LayoutGrid, Smartphone, BarChart3
 } from 'lucide-react'
+import SplitText from '@/components/reactbits/SplitText'
+import AnimatedContent from '@/components/reactbits/AnimatedContent'
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Data Constants
@@ -1295,6 +1297,7 @@ export default function KelasAIPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6">
       {/* Header */}
+      <AnimatedContent distance={30} direction="vertical" duration={0.4}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-indigo-700 shadow-sm">
@@ -1302,7 +1305,7 @@ export default function KelasAIPage() {
           </div>
           <div>
             <h1 className="text-xl font-bold">Kelas AI & Vibe Coding</h1>
-            <p className="text-sm text-muted-foreground">Program Kelas AI & Vibe Coding Untuk Asnaf — PUSPA x AI</p>
+            <SplitText text="Program Kelas AI & Vibe Coding Untuk Asnaf" className="text-sm text-muted-foreground" delay={30} tag="p" textAlign="left" animationFrom={{ opacity: 0, y: 20 }} animationTo={{ opacity: 1, y: 0 }} />
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -1314,8 +1317,7 @@ export default function KelasAIPage() {
           </Badge>
         </div>
       </div>
-
-      {/* Tabs */}
+      </AnimatedContent>
       <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as TabId)} className="space-y-4">
         <div className="w-full overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
           <TabsList className="inline-flex h-auto w-max min-w-full gap-1 bg-muted/50 p-1 rounded-lg">

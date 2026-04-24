@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Heart, Search, Plus, Edit, Trash2, Calendar, MapPin, Users, DollarSign } from 'lucide-react'
+import SpotlightCard from '@/components/reactbits/SpotlightCard'
 
 interface Programme {
   id: string; name: string; description?: string; category: string; status: string
@@ -120,7 +121,7 @@ export default function ProgrammesPage() {
         {items.length === 0 ? (
           <div className="col-span-full py-12 text-center text-muted-foreground">Tiada data program</div>
         ) : items.map(p => (
-          <Card key={p.id} className="transition-shadow hover:shadow-md">
+          <SpotlightCard key={p.id} className="!bg-card !border-border !rounded-xl !p-0 transition-shadow hover:shadow-md" spotlightColor="rgba(75, 0, 130, 0.15)">
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
                 <div className="min-w-0"><CardTitle className="text-base">{p.name}</CardTitle><CardDescription className="mt-1">{categoryLabel[p.category] || p.category}</CardDescription></div>
@@ -140,7 +141,7 @@ export default function ProgrammesPage() {
                 <Button variant="ghost" size="sm" className="h-8 gap-1 text-rose-600" title="Padam" onClick={() => openDeleteDialog(p.id)}><Trash2 className="h-3 w-3" /> Padam</Button>
               </div>
             </CardContent>
-          </Card>
+          </SpotlightCard>
         ))}
       </div>
 

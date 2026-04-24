@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import { Send, Bot, User, Sparkles, BarChart3, Lightbulb } from 'lucide-react'
+import ScrambledText from '@/components/reactbits/ScrambledText'
 
 interface ChatMessage { role: 'user' | 'assistant'; content: string; timestamp: string }
 interface AnalyticsInsight { category: string; insight: string; priority: string }
@@ -57,7 +58,7 @@ export default function AIPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Chat */}
         <Card className="lg:col-span-2">
-          <CardHeader><div className="flex items-center gap-2"><Bot className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Pembantu AI PUSPA</CardTitle></div><CardDescription>Tanya apa-apa tentang data dan operasi PUSPA</CardDescription></CardHeader>
+          <CardHeader><div className="flex items-center gap-2"><Bot className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle><ScrambledText scrambleChars=".:!@#$%^&*">Pembantu AI PUSPA</ScrambledText></CardTitle></div><CardDescription>Tanya apa-apa tentang data dan operasi PUSPA</CardDescription></CardHeader>
           <CardContent>
             <div ref={scrollRef} className="mb-4 h-[400px] overflow-y-auto rounded-lg border bg-muted/30 p-4 space-y-3">
               {messages.length === 0 && (

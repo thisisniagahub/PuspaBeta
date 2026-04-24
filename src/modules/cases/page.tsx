@@ -16,6 +16,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { FileText, Search, Plus, Edit, Trash2, Eye, Clock, AlertCircle, CheckCircle2 } from 'lucide-react'
+import AnimatedContent from '@/components/reactbits/AnimatedContent'
 
 interface Case {
   id: string; caseNumber: string; title: string; description?: string; status: string
@@ -105,6 +106,7 @@ export default function CasesPage() {
 
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
+      <AnimatedContent distance={30} direction="vertical" duration={0.4}>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Pengurusan Kes</h1>
         <Button onClick={() => { setEditing(null); setForm(emptyForm); setDialogOpen(true) }} className="gap-2"><Plus className="h-4 w-4" /> Tambah Kes</Button>
@@ -123,6 +125,7 @@ export default function CasesPage() {
           </CardContent></Card>
         ))}
       </div>
+      </AnimatedContent>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center flex-wrap">
         <div className="relative flex-1"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><Input placeholder="Cari kes…" value={search} onChange={e => setSearch(e.target.value)} className="pl-9" /></div>

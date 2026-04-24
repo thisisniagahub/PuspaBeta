@@ -87,6 +87,7 @@ import {
   StickyNote,
   RefreshCw,
 } from 'lucide-react'
+import AnimatedContent from '@/components/reactbits/AnimatedContent'
 
 // ============ TYPES ============
 
@@ -404,6 +405,7 @@ export default function MembersPage() {
 
   return (
     <div className="p-4 sm:p-6 space-y-6">
+      <AnimatedContent distance={30} direction="vertical" duration={0.4}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -421,6 +423,7 @@ export default function MembersPage() {
           </Button>
         </div>
       </div>
+      </AnimatedContent>
 
       {/* Stats Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
