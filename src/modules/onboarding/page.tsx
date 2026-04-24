@@ -127,15 +127,15 @@ export default function OnboardingPage() {
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: '#4B008215' }}>
-            <UserPlus className="h-5 w-5" style={{ color: '#4B0082' }} />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted">
+            <UserPlus className="h-5 w-5 text-brand" />
           </div>
           <div>
             <h1 className="text-2xl font-bold">Onboarding</h1>
             <p className="text-sm text-muted-foreground">Pendaftaran asnaf melalui sembang pintar</p>
           </div>
         </div>
-        <Button onClick={startNewSession} className="gap-2" style={{ backgroundColor: '#4B0082' }}>
+        <Button onClick={startNewSession} className="gap-2 bg-brand">
           <UserPlus className="h-4 w-4" /> Mulakan Sesi Baharu
         </Button>
       </div>
@@ -156,7 +156,7 @@ export default function OnboardingPage() {
                     <div className={cn(
                       'h-2 w-full rounded-full transition-all',
                       idx < currentStep ? 'bg-green-500' : idx === currentStep ? 'bg-primary' : 'bg-muted'
-                    )} style={idx < currentStep ? { backgroundColor: '#059669' } : idx === currentStep ? { backgroundColor: '#4B0082' } : {}} />
+                    )} style={idx < currentStep ? { backgroundColor: '#059669' } : idx === currentStep ? { backgroundColor: 'var(--brand)' } : {}} />
                     <span className={cn('text-[9px] text-center', idx <= currentStep ? 'text-foreground font-medium' : 'text-muted-foreground')}>{label}</span>
                   </div>
                 ))}
@@ -168,7 +168,7 @@ export default function OnboardingPage() {
           <Card className="flex flex-col" style={{ minHeight: '400px' }}>
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
-                <Bot className="h-5 w-5" style={{ color: '#4B0082' }} />
+                <Bot className="h-5 w-5 text-brand" />
                 <CardTitle className="text-base">Ejen Onboarding</CardTitle>
                 <Badge className="bg-green-100 text-green-700 text-[10px]">Aktif</Badge>
               </div>
@@ -189,7 +189,7 @@ export default function OnboardingPage() {
                         msg.role === 'user'
                           ? 'text-white'
                           : 'bg-muted text-foreground'
-                      )} style={msg.role === 'user' ? { backgroundColor: '#4B0082' } : {}}>
+                      )} style={msg.role === 'user' ? { backgroundColor: 'var(--brand)' } : {}}>
                         <p className="whitespace-pre-wrap">{msg.content}</p>
                         <p className="text-[10px] mt-1 opacity-70">{new Date(msg.timestamp).toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit' })}</p>
                       </div>
@@ -205,7 +205,7 @@ export default function OnboardingPage() {
                     onChange={e => setUserInput(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
                   />
-                  <Button onClick={handleSendMessage} size="icon" style={{ backgroundColor: '#4B0082' }}>
+                  <Button onClick={handleSendMessage} size="icon" className="bg-brand">
                     <Send className="h-4 w-4" />
                   </Button>
                 </div>
@@ -237,7 +237,7 @@ export default function OnboardingPage() {
                       <span className="text-[10px] text-muted-foreground">{new Date(s.createdAt).toLocaleDateString('ms-MY')}</span>
                     </div>
                     <div className="mt-2 h-1.5 rounded-full bg-muted overflow-hidden">
-                      <div className="h-full rounded-full transition-all" style={{ width: `${(s.step / s.totalSteps) * 100}%`, backgroundColor: s.status === 'selesai' ? '#059669' : '#4B0082' }} />
+                      <div className="h-full rounded-full transition-all" style={{ width: `${(s.step / s.totalSteps) * 100}%`, backgroundColor: s.status === 'selesai' ? '#059669' : 'var(--brand)' }} />
                     </div>
                   </div>
                 ))}

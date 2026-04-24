@@ -33,7 +33,7 @@ const triggerColors: Record<string, string> = {
   kes_baharu: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400',
   kes_idle: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400',
   donasi_terima: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400',
-  program_mingguan: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400',
+  program_mingguan: 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary',
   sukarelawan_lulus: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-400',
   custom: 'bg-gray-100 text-gray-700 dark:bg-gray-900/40 dark:text-gray-400',
 }
@@ -107,8 +107,8 @@ export default function AutomationRulesPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: '#4B008215' }}>
-          <Zap className="h-5 w-5" style={{ color: '#4B0082' }} />
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted">
+          <Zap className="h-5 w-5 text-brand" />
         </div>
         <div>
           <h1 className="text-2xl font-bold">Peraturan Automasi</h1>
@@ -118,13 +118,13 @@ export default function AutomationRulesPage() {
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {[
-          { label: 'Jumlah Peraturan', value: rules.length, color: '#4B0082' },
+          { label: 'Jumlah Peraturan', value: rules.length, color: 'var(--brand)', bgColor: 'var(--brand-muted)' },
           { label: 'Aktif', value: rules.filter(r => r.enabled).length, color: '#059669' },
           { label: 'Tidak Aktif', value: rules.filter(r => !r.enabled).length, color: '#6b7280' },
           { label: 'Jumlah Pencetus', value: rules.reduce((s, r) => s + r.triggerCount, 0), color: '#d97706' },
         ].map(s => (
           <Card key={s.label}><CardContent className="flex items-center gap-3 p-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: `${s.color}15` }}>
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: s.bgColor || `${s.color}15` }}>
               <Zap className="h-5 w-5" style={{ color: s.color }} />
             </div>
             <div><p className="text-xs text-muted-foreground">{s.label}</p><p className="text-xl font-bold">{s.value}</p></div>
@@ -227,7 +227,7 @@ export default function AutomationRulesPage() {
                 <Label>Tindakan (satu per baris)</Label>
                 <Textarea placeholder={"Hantar notifikasi\nJana dokumen\nKemaskini status"} rows={4} value={form.actions} onChange={e => setForm(p => ({ ...p, actions: e.target.value }))} />
               </div>
-              <Button onClick={handleAddRule} disabled={saving} className="gap-2" style={{ backgroundColor: '#4B0082' }}>
+              <Button onClick={handleAddRule} disabled={saving} className="gap-2 bg-brand">
                 {saving ? 'Menyimpan…' : <><Plus className="h-4 w-4" /> Tambah Peraturan</>}
               </Button>
             </CardContent>

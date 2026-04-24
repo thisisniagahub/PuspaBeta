@@ -24,7 +24,7 @@ interface Donor {
 }
 
 const segmentColor: Record<string, string> = {
-  major: 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300',
+  major: 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary',
   regular: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
   occasional: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
   lapsed: 'bg-gray-100 text-gray-800 dark:bg-gray-900/40 dark:text-gray-300',

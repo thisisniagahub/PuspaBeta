@@ -20,13 +20,13 @@ export default function DocsPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <BookOpen className="h-6 w-6" style={{ color: '#4B0082' }} />
+        <BookOpen className="h-6 w-6 text-brand" />
         <h1 className="text-2xl font-bold">Panduan Penggunaan</h1>
       </div>
 
-      <div className="rounded-2xl bg-gradient-to-br from-[#4B0082] via-[#6B21A8] to-[#7C3AED] p-6 text-white">
+      <div className="rounded-2xl bg-gradient-to-br from-brand via-primary to-primary/70 p-6 text-white">
         <h2 className="text-xl font-bold">Selamat Datang ke PUSPA v3.0</h2>
-        <p className="mt-2 text-sm text-purple-100">Sistem pengurusan NGO komprehensif untuk Pertubuhan Urus Peduli Asnaf KL &amp; Selangor.</p>
+        <p className="mt-2 text-sm text-white/80">Sistem pengurusan NGO komprehensif untuk Pertubuhan Urus Peduli Asnaf KL &amp; Selangor.</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Badge className="bg-white/20 text-white">PPM-006-14-14032020</Badge>
           <Badge className="bg-white/20 text-white">v3.0.0</Badge>
@@ -38,7 +38,7 @@ export default function DocsPage() {
           <Card key={s.title} className="transition-shadow hover:shadow-md">
             <CardHeader className="pb-2">
               <div className="flex items-center gap-2">
-                <s.icon className="h-5 w-5" style={{ color: '#4B0082' }} />
+                <s.icon className="h-5 w-5 text-brand" />
                 <CardTitle className="text-base">{s.title}</CardTitle>
               </div>
             </CardHeader>

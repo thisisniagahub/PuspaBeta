@@ -70,7 +70,7 @@ export default function TapSecurePage() {
 
       {/* Devices */}
       <Card>
-        <CardHeader><div className="flex items-center gap-2"><Smartphone className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Peranti Terikat</CardTitle></div><CardDescription>Maksimum 5 peranti boleh didaftarkan</CardDescription></CardHeader>
+        <CardHeader><div className="flex items-center gap-2"><Smartphone className="h-5 w-5 text-brand" /><CardTitle>Peranti Terikat</CardTitle></div><CardDescription>Maksimum 5 peranti boleh didaftarkan</CardDescription></CardHeader>
         <CardContent>
           {devices.length === 0 ? <p className="py-4 text-center text-sm text-muted-foreground">Tiada peranti terikat</p> : (
             <div className="space-y-3">
@@ -80,7 +80,7 @@ export default function TapSecurePage() {
                   <div key={d.id} className="flex items-center gap-3 rounded-lg border p-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted"><Icon className="h-5 w-5" /></div>
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2"><p className="text-sm font-medium">{d.deviceName || 'Peranti Tidak Dikenali'}</p>{d.isPrimary && <Badge className="bg-purple-100 text-purple-800 text-[10px]">Utama</Badge>}</div>
+                      <div className="flex items-center gap-2"><p className="text-sm font-medium">{d.deviceName || 'Peranti Tidak Dikenali'}</p>{d.isPrimary && <Badge className="bg-primary/10 text-primary text-[10px]">Utama</Badge>}</div>
                       <p className="text-xs text-muted-foreground">IP: {d.ipAddress || '—'} &bull; Terakhir: {new Date(d.lastUsedAt).toLocaleDateString('ms-MY')}</p>
                     </div>
                     <div className="flex items-center gap-1">
@@ -97,7 +97,7 @@ export default function TapSecurePage() {
 
       {/* Settings */}
       <Card>
-        <CardHeader><div className="flex items-center gap-2"><Shield className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Tetapan Keselamatan</CardTitle></div></CardHeader>
+        <CardHeader><div className="flex items-center gap-2"><Shield className="h-5 w-5 text-brand" /><CardTitle>Tetapan Keselamatan</CardTitle></div></CardHeader>
         <CardContent className="space-y-4">
           {settings ? (
             <>
@@ -120,7 +120,7 @@ export default function TapSecurePage() {
 
       {/* Security Logs */}
       <Card>
-        <CardHeader><div className="flex items-center gap-2"><Activity className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Log Keselamatan</CardTitle></div></CardHeader>
+        <CardHeader><div className="flex items-center gap-2"><Activity className="h-5 w-5 text-brand" /><CardTitle>Log Keselamatan</CardTitle></div></CardHeader>
         <CardContent>
           {logs.length === 0 ? <p className="py-4 text-center text-sm text-muted-foreground">Tiada log</p> : (
             <div className="max-h-96 overflow-y-auto space-y-2">

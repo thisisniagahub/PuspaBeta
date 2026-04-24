@@ -38,7 +38,7 @@ const channelIcons: Record<string, React.ComponentType<{ className?: string }>> 
 const channelColor: Record<string, string> = {
   whatsapp: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400',
   telegram: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400',
-  email: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400',
+  email: 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary',
   web: 'bg-gray-100 text-gray-700 dark:bg-gray-900/40 dark:text-gray-400',
 }
 
@@ -141,8 +141,8 @@ export default function NotificationsPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: '#4B008215' }}>
-          <Bell className="h-5 w-5" style={{ color: '#4B0082' }} />
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted">
+          <Bell className="h-5 w-5 text-brand" />
         </div>
         <div>
           <h1 className="text-2xl font-bold">Notifikasi</h1>
@@ -152,13 +152,13 @@ export default function NotificationsPage() {
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {[
-          { label: 'Jumlah Dihantar', value: totalSent, icon: Send, color: '#4B0082' },
+          { label: 'Jumlah Dihantar', value: totalSent, icon: Send, color: 'var(--brand)', bgColor: 'var(--brand-muted)' },
           { label: 'Berjaya', value: delivered, icon: CheckCircle2, color: '#059669' },
           { label: 'Gagal', value: failed, icon: XCircle, color: '#dc2626' },
           { label: 'Menunggu', value: pending, icon: Clock, color: '#d97706' },
         ].map(s => (
           <Card key={s.label}><CardContent className="flex items-center gap-3 p-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: `${s.color}15` }}><s.icon className="h-5 w-5" style={{ color: s.color }} /></div>
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: s.bgColor || `${s.color}15` }}><s.icon className="h-5 w-5" style={{ color: s.color }} /></div>
             <div><p className="text-xs text-muted-foreground">{s.label}</p><p className="text-xl font-bold">{s.value}</p></div>
           </CardContent></Card>
         ))}
@@ -277,7 +277,7 @@ export default function NotificationsPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button onClick={handleSend} disabled={sending} className="gap-2" style={{ backgroundColor: '#4B0082' }}>
+              <Button onClick={handleSend} disabled={sending} className="gap-2 bg-brand">
                 {sending ? <><Clock className="h-4 w-4 animate-spin" /> Menghantar…</> : <><Send className="h-4 w-4" /> Hantar Notifikasi</>}
               </Button>
             </CardContent>

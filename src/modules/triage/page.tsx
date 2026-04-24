@@ -101,8 +101,8 @@ export default function TriagePage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: '#4B008215' }}>
-          <Siren className="h-5 w-5" style={{ color: '#4B0082' }} />
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted">
+          <Siren className="h-5 w-5 text-brand" />
         </div>
         <div>
           <h1 className="text-2xl font-bold">Enjin Triage</h1>
@@ -123,7 +123,7 @@ export default function TriagePage() {
                 <div>
                   <p className="text-xs text-muted-foreground">{cfg.label.split(' — ')[1]}</p>
                   <p className="text-xl font-bold">{priorityCounts[p] || 0}</p>
-                  <p className="text-[10px] font-semibold" style={{ color: '#4B0082' }}>{p}</p>
+                  <p className="text-[10px] font-semibold text-brand">{p}</p>
                 </div>
               </CardContent>
             </Card>
@@ -235,14 +235,14 @@ export default function TriagePage() {
                   </Select>
                 </div>
                 <div className="grid gap-2"><Label>Keterangan Tambahan</Label><Textarea placeholder="Terangkan situasi kes…" value={triageForm.description} onChange={e => setTriageForm(p => ({ ...p, description: e.target.value }))} /></div>
-                <Button onClick={handleRunTriage} disabled={triageRunning} className="gap-2 w-full" style={{ backgroundColor: '#4B0082' }}>
+                <Button onClick={handleRunTriage} disabled={triageRunning} className="gap-2 w-full bg-brand">
                   {triageRunning ? <><Activity className="h-4 w-4 animate-spin" /> Menjalankan Triage…</> : <><Play className="h-4 w-4" /> Jalankan Triage</>}
                 </Button>
               </CardContent>
             </Card>
 
             {triageResult && (
-              <Card className="border-2" style={{ borderColor: '#4B008240' }}>
+              <Card className="border-2 border-brand/25">
                 <CardHeader><CardTitle className="text-base">Keputusan Triage</CardTitle><CardDescription>Keputusan penilaian automatik</CardDescription></CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -253,7 +253,7 @@ export default function TriagePage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Skor Keseluruhan</span>
-                    <span className="text-2xl font-bold" style={{ color: '#4B0082' }}>{triageResult.score}%</span>
+                    <span className="text-2xl font-bold text-brand">{triageResult.score}%</span>
                   </div>
                   <Progress value={triageResult.score} className="h-3" />
                   <div className="pt-2 space-y-2">
@@ -265,7 +265,7 @@ export default function TriagePage() {
                           <span className="font-medium">{f.value}/{f.weight}</span>
                         </div>
                         <div className="h-2 rounded-full bg-muted overflow-hidden">
-                          <div className="h-full rounded-full transition-all" style={{ width: `${(f.value / f.weight) * 100}%`, backgroundColor: '#4B0082' }} />
+                          <div className="h-full rounded-full transition-all bg-brand" style={{ width: `${(f.value / f.weight) * 100}%` }} />
                         </div>
                       </div>
                     ))}

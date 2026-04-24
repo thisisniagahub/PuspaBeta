@@ -82,13 +82,13 @@ export default function OpsConductorPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Chat */}
         <Card>
-          <CardHeader><div className="flex items-center gap-2"><Bot className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Chat Ops</CardTitle></div><CardDescription>Arahan operasi AI</CardDescription></CardHeader>
+          <CardHeader><div className="flex items-center gap-2"><Bot className="h-5 w-5 text-brand" /><CardTitle>Chat Ops</CardTitle></div><CardDescription>Arahan operasi AI</CardDescription></CardHeader>
           <CardContent>
             <div ref={scrollRef} className="mb-3 h-[300px] overflow-y-auto rounded-lg border bg-muted/30 p-3 space-y-2">
               {messages.length === 0 && <p className="py-8 text-center text-sm text-muted-foreground">Taip arahan operasi anda…</p>}
               {messages.map((m, i) => (
                 <div key={i} className={`flex gap-2 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  {m.role === 'assistant' && <Bot className="mt-1 h-4 w-4 shrink-0 text-purple-600" />}
+                  {m.role === 'assistant' && <Bot className="mt-1 h-4 w-4 shrink-0 text-primary" />}
                   <div className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${m.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-card border'}`}>{m.content}</div>
                   {m.role === 'user' && <User className="mt-1 h-4 w-4 shrink-0" />}
                 </div>

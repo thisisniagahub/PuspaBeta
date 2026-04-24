@@ -41,7 +41,7 @@ export default function IntegrationsPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <Radio className="h-6 w-6" style={{ color: '#4B0082' }} />
+        <Radio className="h-6 w-6 text-brand" />
         <h1 className="text-2xl font-bold">Gateway &amp; Channel</h1>
       </div>
 
@@ -51,7 +51,7 @@ export default function IntegrationsPage() {
           <div><p className="text-xs text-muted-foreground">Bersambung</p><p className="text-xl font-bold">{connectedCount}</p></div>
         </CardContent></Card>
         <Card><CardContent className="flex items-center gap-3 p-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: 'rgba(124,58,237,0.1)' }}><ArrowRightLeft className="h-5 w-5 text-purple-600" /></div>
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: 'rgba(124,58,237,0.1)' }}><ArrowRightLeft className="h-5 w-5 text-primary" /></div>
           <div><p className="text-xs text-muted-foreground">Jumlah Saluran</p><p className="text-xl font-bold">{channels.length}</p></div>
         </CardContent></Card>
       </div>

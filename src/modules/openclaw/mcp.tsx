@@ -53,7 +53,7 @@ export default function MCPServersPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <Server className="h-6 w-6" style={{ color: '#4B0082' }} />
+        <Server className="h-6 w-6 text-brand" />
         <h1 className="text-2xl font-bold">Pelayan MCP</h1>
       </div>
 

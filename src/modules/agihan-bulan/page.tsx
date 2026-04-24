@@ -51,7 +51,7 @@ export default function AgihanBulanPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <Calendar className="h-6 w-6" style={{ color: '#4B0082' }} />
+        <Calendar className="h-6 w-6 text-brand" />
         <h1 className="text-2xl font-bold">Agihan Bulanan</h1>
       </div>
 

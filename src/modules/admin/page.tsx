@@ -75,7 +75,7 @@ export default function AdminPage() {
 
       {/* Org Profile */}
       <Card>
-        <CardHeader><div className="flex items-center gap-2"><Building2 className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Profil Organisasi</CardTitle></div><CardDescription>Maklumat rasmi organisasi</CardDescription></CardHeader>
+        <CardHeader><div className="flex items-center gap-2"><Building2 className="h-5 w-5 text-brand" /><CardTitle>Profil Organisasi</CardTitle></div><CardDescription>Maklumat rasmi organisasi</CardDescription></CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="grid gap-2"><Label>Nama Undang-undang</Label><Input value={orgForm.legalName} onChange={e => setOrgForm(p => ({ ...p, legalName: e.target.value }))} /></div>
@@ -94,7 +94,7 @@ export default function AdminPage() {
       {/* Branches */}
       <Card>
         <CardHeader><div className="flex items-center justify-between">
-          <div className="flex items-center gap-2"><MapPin className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Cawangan</CardTitle></div>
+          <div className="flex items-center gap-2"><MapPin className="h-5 w-5 text-brand" /><CardTitle>Cawangan</CardTitle></div>
           <Button size="sm" className="gap-2" onClick={() => setBranchDialog(true)}><Plus className="h-4 w-4" /> Tambah</Button>
         </div></CardHeader>
         <CardContent>
@@ -122,7 +122,7 @@ export default function AdminPage() {
 
       {/* User Management Placeholder */}
       <Card>
-        <CardHeader><div className="flex items-center gap-2"><Users className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Pengurusan Pengguna</CardTitle></div></CardHeader>
+        <CardHeader><div className="flex items-center gap-2"><Users className="h-5 w-5 text-brand" /><CardTitle>Pengurusan Pengguna</CardTitle></div></CardHeader>
         <CardContent><p className="text-sm text-muted-foreground">Pengurusan pengguna akan datang dalam versi akan datang.</p></CardContent>
       </Card>
 

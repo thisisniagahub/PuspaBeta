@@ -40,7 +40,7 @@ interface ChannelConfig {
 const channelBadge: Record<string, { color: string; icon: React.ComponentType<{ className?: string }> }> = {
   whatsapp: { color: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400', icon: Smartphone },
   telegram: { color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400', icon: MessageCircle },
-  web: { color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400', icon: MessageSquare },
+  web: { color: 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary', icon: MessageSquare },
   email: { color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400', icon: Mail },
   sms: { color: 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-400', icon: Smartphone },
 }
@@ -72,8 +72,8 @@ const barChartData = [
 ]
 
 const pieData = [
-  { name: 'Masuk', value: 355, color: '#4B0082' },
-  { name: 'Keluar', value: 367, color: '#9333ea' },
+  { name: 'Masuk', value: 355, color: 'var(--brand)' },
+  { name: 'Keluar', value: 367, color: 'hsl(var(--primary))' },
 ]
 
 export default function MultiChannelPage() {
@@ -126,8 +126,8 @@ export default function MultiChannelPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: '#4B008215' }}>
-          <MessageSquare className="h-5 w-5" style={{ color: '#4B0082' }} />
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted">
+          <MessageSquare className="h-5 w-5 text-brand" />
         </div>
         <div>
           <h1 className="text-2xl font-bold">Berbilang Saluran</h1>
@@ -194,8 +194,8 @@ export default function MultiChannelPage() {
                     <XAxis dataKey="channel" className="text-xs" />
                     <YAxis className="text-xs" />
                     <Tooltip />
-                    <Bar dataKey="inbound" fill="#4B0082" name="Masuk" radius={[4, 4, 0, 0]} />
-                    <Bar dataKey="outbound" fill="#9333ea" name="Keluar" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="inbound" fill="var(--brand)" name="Masuk" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="outbound" fill="hsl(var(--primary))" name="Keluar" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>

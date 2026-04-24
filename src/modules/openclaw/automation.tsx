@@ -84,7 +84,7 @@ export default function AutomationPage() {
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Workflow className="h-6 w-6" style={{ color: '#4B0082' }} />
+          <Workflow className="h-6 w-6 text-brand" />
           <h1 className="text-2xl font-bold">Automasi</h1>
         </div>
         <Button onClick={() => setDialogOpen(true)} className="gap-2"><Plus className="h-4 w-4" /> Tambah</Button>

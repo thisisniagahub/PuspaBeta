@@ -75,9 +75,9 @@ const SPONSOR_TIERS = [
     name: 'PLATINUM',
     amount: 'RM 50,000',
     icon: Trophy,
-    color: 'text-purple-700',
-    bg: 'bg-purple-50 dark:bg-purple-950/30',
-    border: 'border-purple-300 dark:border-purple-700',
+    color: 'text-primary',
+    bg: 'bg-primary/5 dark:bg-primary/10',
+    border: 'border-primary/30 dark:border-primary/50',
     benefits: [
       'Logo utama di semua material (banner, sijil, baju, website)',
       'Naming rights: "Program AI PUSPA x [Syarikat]"',
@@ -330,21 +330,21 @@ function VisiTab() {
   return (
     <div className="space-y-6">
       {/* Hero Banner */}
-      <Card className="overflow-hidden border-2 border-purple-200 dark:border-purple-800/50">
-        <div className="bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800 p-6 text-white">
+      <Card className="overflow-hidden border-2 border-primary/20 dark:border-primary/30">
+        <div className="bg-gradient-to-br from-primary via-primary/90 to-primary/70 p-6 text-white">
           <div className="flex items-center gap-3 mb-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur">
               <Sparkles className="h-6 w-6" />
             </div>
             <div>
               <h2 className="text-2xl font-bold">PUSPA x AI</h2>
-              <p className="text-purple-200 text-sm">Program Kelas AI & Vibe Coding Untuk Asnaf</p>
+              <p className="text-white/70 text-sm">Program Kelas AI & Vibe Coding Untuk Asnaf</p>
             </div>
           </div>
-          <blockquote className="mt-4 border-l-4 border-white/40 pl-4 italic text-purple-100">
+          <blockquote className="mt-4 border-l-4 border-white/40 pl-4 italic text-white/80">
             &ldquo;Dari Asnaf ke Digital Entrepreneur — Dikuasakan AI&rdquo;
           </blockquote>
-          <p className="mt-2 text-purple-200 text-sm italic">
+          <p className="mt-2 text-white/70 text-sm italic">
             Code Your Way Out — AI-Powered Upskilling for the Underserved
           </p>
         </div>
@@ -396,7 +396,7 @@ function VisiTab() {
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <StatCard icon={Clock} label="Tempoh" value="12 Minggu" sub="108 jam" color="bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400" />
-        <StatCard icon={Users} label="Peserta" value="30 Orang" sub="Per batch" color="bg-purple-100 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400" />
+        <StatCard icon={Users} label="Peserta" value="30 Orang" sub="Per batch" color="bg-primary/10 dark:bg-primary/10 text-primary" />
         <StatCard icon={GraduationCap} label="Graduan Target" value="≥75%" sub="22/30 pelajar" color="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400" />
         <StatCard icon={DollarSign} label="Bajet" value="≈RM 100K" sub="Per batch" color="bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400" />
       </div>
@@ -518,7 +518,7 @@ function PesertaTab() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
-            <Target className="h-5 w-5 text-purple-500" />
+            <Target className="h-5 w-5 text-primary" />
             Profil Peserta Ideal
           </CardTitle>
         </CardHeader>
@@ -549,7 +549,7 @@ function PesertaTab() {
 
       {/* Saiz Kelas */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <StatCard icon={Users} label="Saiz Kelas" value="20–30" sub="Per batch" color="bg-purple-100 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400" />
+        <StatCard icon={Users} label="Saiz Kelas" value="20–30" sub="Per batch" color="bg-primary/10 dark:bg-primary/10 text-primary" />
         <StatCard icon={RefreshCw} label="Batch/Tahun" value="2" sub="Mac-Jun & Sep-Dis" color="bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400" />
         <StatCard icon={UserCheck} label="Mentor Ratio" value="1:5" sub="1 mentor : 5 pelajar" color="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400" />
       </div>
@@ -570,7 +570,7 @@ function PesertaTab() {
               { step: 3, title: 'Keutamaan', desc: 'Single parents, belia menganggur, OKU ringan, ketua keluarga' },
             ].map((item) => (
               <div key={item.step} className="flex items-start gap-3 rounded-lg border bg-muted/30 p-3">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-950/40 text-xs font-bold text-purple-700 dark:text-purple-400">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/10 text-xs font-bold text-primary">
                   {item.step}
                 </div>
                 <div>
@@ -653,7 +653,7 @@ function PenajaTab() {
           <Card key={s.name} className="overflow-hidden">
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-950/40 text-sm font-bold text-purple-700 dark:text-purple-400">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 dark:bg-primary/10 text-sm font-bold text-primary">
                   {i + 1}
                 </div>
                 <div className="min-w-0 flex-1">
@@ -730,7 +730,7 @@ function BajetTab() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <StatCard icon={Calculator} label="Jumlah Bajet" value={formatRM(grandTotal)} sub="Sebelum contingency" color="bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400" />
         <StatCard icon={DollarSign} label="Contingency 10%" value={formatRM(contingency)} sub="Buffer" color="bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400" />
-        <StatCard icon={TrendingUp} label="Total Keseluruhan" value={formatRM(totalKeseluruhan)} sub="≈ RM 100,000" color="bg-purple-100 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400" />
+        <StatCard icon={TrendingUp} label="Total Keseluruhan" value={formatRM(totalKeseluruhan)} sub="≈ RM 100,000" color="bg-primary/10 dark:bg-primary/10 text-primary" />
       </div>
 
       {/* Budget Breakdown */}
@@ -781,7 +781,7 @@ function BajetTab() {
             <Separator />
             <div className="flex justify-between text-base">
               <span className="font-bold">Total Keseluruhan</span>
-              <span className="font-bold text-purple-700 dark:text-purple-400">{formatRM(totalKeseluruhan)}</span>
+              <span className="font-bold text-primary">{formatRM(totalKeseluruhan)}</span>
             </div>
           </div>
         </CardContent>
@@ -901,7 +901,7 @@ function LogistikTab() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
-            <Building2 className="h-5 w-5 text-purple-500" />
+            <Building2 className="h-5 w-5 text-primary" />
             Venue Cadangan
           </CardTitle>
         </CardHeader>
@@ -1062,7 +1062,7 @@ function SustainabilityTab() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
-            <Users className="h-5 w-5 text-purple-500" />
+            <Users className="h-5 w-5 text-primary" />
             Alumni Network
           </CardTitle>
         </CardHeader>
@@ -1075,7 +1075,7 @@ function SustainabilityTab() {
               'Job board dalaman untuk freelance opportunities',
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-2 text-sm rounded-lg border p-2.5">
-                <CheckCircle2 className="h-4 w-4 text-purple-500 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                 <span>{item}</span>
               </div>
             ))}
@@ -1120,8 +1120,8 @@ function SustainabilityTab() {
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {SCALE_PLAN.map((s) => (
-              <div key={s.year} className="rounded-lg border-2 border-purple-200 dark:border-purple-800/50 bg-purple-50/50 dark:bg-purple-950/20 p-4 text-center">
-                <p className="text-lg font-bold text-purple-700 dark:text-purple-400">{s.year}</p>
+              <div key={s.year} className="rounded-lg border-2 border-primary/20 dark:border-primary/30 bg-primary/5 dark:bg-primary/10 p-4 text-center">
+                <p className="text-lg font-bold text-primary">{s.year}</p>
                 <div className="mt-2 space-y-1">
                   <p className="text-2xl font-bold">{s.graduates}</p>
                   <p className="text-xs text-muted-foreground">graduan</p>
@@ -1144,7 +1144,7 @@ function SuratTab() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
-            <Mail className="h-5 w-5 text-purple-500" />
+            <Mail className="h-5 w-5 text-primary" />
             Template Surat Tajaan
           </CardTitle>
           <CardDescription>Template rasmi untuk dihantar kepada jabatan CSR syarikat penaja</CardDescription>
@@ -1207,17 +1207,17 @@ function SuratTab() {
 function IntegrasiTab() {
   return (
     <div className="space-y-6">
-      <Card className="border-purple-200 dark:border-purple-800/50">
+      <Card className="border-primary/20 dark:border-primary/30">
         <CardContent className="p-6">
           <div className="text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-purple-100 dark:bg-purple-950/40 mx-auto mb-3">
-              <Link2 className="h-7 w-7 text-purple-600 dark:text-purple-400" />
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 dark:bg-primary/10 mx-auto mb-3">
+              <Link2 className="h-7 w-7 text-primary dark:text-primary" />
             </div>
             <h3 className="text-lg font-bold">Integrasi PuspaCare</h3>
             <p className="text-sm text-muted-foreground mt-1">
               Program ini boleh ditrack sepenuhnya dalam sistem PuspaCare
             </p>
-            <blockquote className="mt-3 text-sm font-medium text-purple-700 dark:text-purple-400 italic">
+            <blockquote className="mt-3 text-sm font-medium text-primary italic">
               &ldquo;Satu ekosistem, satu platform.&rdquo;
             </blockquote>
           </div>
@@ -1231,8 +1231,8 @@ function IntegrasiTab() {
             <Card key={m.module}>
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-purple-50 dark:bg-purple-950/40">
-                    <MIcon className="h-4.5 w-4.5 text-purple-600 dark:text-purple-400" />
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/5 dark:bg-primary/10">
+                    <MIcon className="h-4.5 w-4.5 text-primary dark:text-primary" />
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-semibold">{m.module}</p>
@@ -1257,7 +1257,7 @@ function IntegrasiTab() {
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
             {['Pendaftaran', 'Penilaian', 'Kelas', 'Penjejakan', 'Graduasi', 'Alumni'].map((step, i) => (
               <div key={step} className="flex items-center gap-2">
-                <div className="rounded-lg border-2 border-purple-200 dark:border-purple-700 bg-purple-50/50 dark:bg-purple-950/20 px-3 py-2 font-medium text-purple-700 dark:text-purple-400">
+                <div className="rounded-lg border-2 border-primary/20 dark:border-primary/30 bg-primary/5 dark:bg-primary/10 px-3 py-2 font-medium text-primary">
                   {step}
                 </div>
                 {i < 5 && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
@@ -1300,7 +1300,7 @@ export default function KelasAIPage() {
       <AnimatedContent distance={30} direction="vertical" duration={0.4}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-indigo-700 shadow-sm">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/70 shadow-sm">
             <GraduationCap className="h-6 w-6 text-white" />
           </div>
           <div>
@@ -1309,7 +1309,7 @@ export default function KelasAIPage() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-950/40 dark:text-purple-400 border-0">
+          <Badge className="bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary border-0">
             Batch 1 — 2026
           </Badge>
           <Badge variant="outline" className="text-emerald-600 border-emerald-300">

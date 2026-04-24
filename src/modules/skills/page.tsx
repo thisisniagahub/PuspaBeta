@@ -39,7 +39,7 @@ interface SkillCategory {
 const categoryColors: Record<string, string> = {
   Communication: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400',
   Productivity: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400',
-  Data: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400',
+  Data: 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary',
   Finance: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400',
   Security: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400',
 }
@@ -66,7 +66,7 @@ const mockMarketplace: Skill[] = [
 const mockCategories: SkillCategory[] = [
   { id: 'communication', name: 'Communication', description: 'Saluran komunikasi dan integrasi mesej', icon: '💬', count: 4, color: '#059669' },
   { id: 'productivity', name: 'Productivity', description: 'Automasi dan peningkatan produktiviti', icon: '⚡', count: 3, color: '#2563eb' },
-  { id: 'data', name: 'Data', description: 'Analisis data dan visualisasi', icon: '📊', count: 2, color: '#4B0082' },
+  { id: 'data', name: 'Data', description: 'Analisis data dan visualisasi', icon: '📊', count: 2, color: 'var(--brand)' },
   { id: 'finance', name: 'Finance', description: 'Pengurusan kewangan dan perakaunan', icon: '💰', count: 2, color: '#d97706' },
   { id: 'security', name: 'Security', description: 'Keselamatan dan pengesahan', icon: '🔒', count: 2, color: '#dc2626' },
 ]
@@ -130,8 +130,8 @@ export default function SkillsPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: '#4B008215' }}>
-          <Package className="h-5 w-5" style={{ color: '#4B0082' }} />
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted">
+          <Package className="h-5 w-5 text-brand" />
         </div>
         <div>
           <h1 className="text-2xl font-bold">Pasar Kemahiran</h1>
@@ -215,7 +215,7 @@ export default function SkillsPage() {
                         <span className="text-xs">{skill.rating}</span>
                       </div>
                     </div>
-                    <Button size="sm" variant={skill.installed ? 'secondary' : 'default'} disabled={skill.installed} onClick={() => installSkill(skill.id)} className="gap-1.5 text-xs" style={!skill.installed ? { backgroundColor: '#4B0082' } : {}}>
+                    <Button size="sm" variant={skill.installed ? 'secondary' : 'default'} disabled={skill.installed} onClick={() => installSkill(skill.id)} className={cn("gap-1.5 text-xs", !skill.installed && "bg-brand")}>
                       {skill.installed ? <><Check className="h-3 w-3" /> Dipasang</> : <><Download className="h-3 w-3" /> Pasang</>}
                     </Button>
                   </div>

@@ -35,7 +35,7 @@ const categoryColors: Record<string, string> = {
   kewangan: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400',
   kesihatan: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400',
   keluarga: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400',
-  pekerjaan: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400',
+  pekerjaan: 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary',
   pendidikan: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-400',
   preferensi: 'bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-400',
 }
@@ -160,8 +160,8 @@ export default function AgentMemoryPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: '#4B008215' }}>
-          <Brain className="h-5 w-5" style={{ color: '#4B0082' }} />
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted">
+          <Brain className="h-5 w-5 text-brand" />
         </div>
         <div>
           <h1 className="text-2xl font-bold">Memori Ejen</h1>
@@ -220,7 +220,7 @@ export default function AgentMemoryPage() {
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input placeholder="Cari memori…" value={search} onChange={e => setSearch(e.target.value)} className="pl-9" />
             </div>
-            <Button size="sm" className="gap-1.5" style={{ backgroundColor: '#4B0082' }} onClick={() => setShowAddForm(!showAddForm)}>
+            <Button size="sm" className="gap-1.5 bg-brand" onClick={() => setShowAddForm(!showAddForm)}>
               <Plus className="h-3.5 w-3.5" /> Tambah
             </Button>
           </div>
@@ -244,7 +244,7 @@ export default function AgentMemoryPage() {
                 </Select>
                 <Input placeholder="Kandungan memori…" value={newMemory.content} onChange={e => setNewMemory(p => ({ ...p, content: e.target.value }))} />
                 <div className="flex gap-2">
-                  <Button size="sm" onClick={handleAddMemory} style={{ backgroundColor: '#4B0082' }}>Simpan</Button>
+                  <Button size="sm" onClick={handleAddMemory} className="bg-brand">Simpan</Button>
                   <Button size="sm" variant="outline" onClick={() => setShowAddForm(false)}>Batal</Button>
                 </div>
               </CardContent>

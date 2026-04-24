@@ -43,7 +43,7 @@ export default function AgentsPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <Bot className="h-6 w-6" style={{ color: '#4B0082' }} />
+        <Bot className="h-6 w-6 text-brand" />
         <h1 className="text-2xl font-bold">Ejen AI</h1>
       </div>
 
@@ -53,7 +53,7 @@ export default function AgentsPage() {
           <div><p className="text-xs text-muted-foreground">Aktif</p><p className="text-xl font-bold">{agents.filter(a => a.status === 'active').length}</p></div>
         </CardContent></Card>
         <Card><CardContent className="flex items-center gap-3 p-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: 'rgba(124,58,237,0.1)' }}><CircleDot className="h-5 w-5 text-purple-600" /></div>
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: 'rgba(124,58,237,0.1)' }}><CircleDot className="h-5 w-5 text-primary" /></div>
           <div><p className="text-xs text-muted-foreground">Jumlah Ejen</p><p className="text-xl font-bold">{agents.length}</p></div>
         </CardContent></Card>
       </div>

@@ -97,7 +97,7 @@ export default function CompliancePage() {
       {/* Org Profile */}
       {org && (
         <Card>
-          <CardHeader><div className="flex items-center gap-2"><Building2 className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Profil Organisasi</CardTitle></div></CardHeader>
+          <CardHeader><div className="flex items-center gap-2"><Building2 className="h-5 w-5 text-brand" /><CardTitle>Profil Organisasi</CardTitle></div></CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2">
             <div><p className="text-xs text-muted-foreground">Nama Undang-undang</p><p className="font-medium">{org.legalName}</p></div>
             <div><p className="text-xs text-muted-foreground">No. Pendaftaran</p><p className="font-medium">{org.registrationNumber || '—'}</p></div>
@@ -147,7 +147,7 @@ export default function CompliancePage() {
       {/* Board Members & Partners */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
-          <CardHeader><div className="flex items-center gap-2"><Users className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Ahli Lembaga</CardTitle></div></CardHeader>
+          <CardHeader><div className="flex items-center gap-2"><Users className="h-5 w-5 text-brand" /><CardTitle>Ahli Lembaga</CardTitle></div></CardHeader>
           <CardContent>
             {board.length === 0 ? <p className="text-sm text-muted-foreground">Tiada ahli lembaga</p> : (
               <div className="space-y-2">
@@ -163,7 +163,7 @@ export default function CompliancePage() {
         </Card>
 
         <Card>
-          <CardHeader><div className="flex items-center gap-2"><Handshake className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Rakan Kongsi</CardTitle></div></CardHeader>
+          <CardHeader><div className="flex items-center gap-2"><Handshake className="h-5 w-5 text-brand" /><CardTitle>Rakan Kongsi</CardTitle></div></CardHeader>
           <CardContent>
             {partners.length === 0 ? <p className="text-sm text-muted-foreground">Tiada rakan kongsi</p> : (
               <div className="space-y-2">

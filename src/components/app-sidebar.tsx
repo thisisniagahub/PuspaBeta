@@ -222,7 +222,7 @@ function getVisibleGroups(role: UserRole): NavGroup[] {
 // Constants
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const BRAND_COLOR = '#4B0082'
+const BRAND_COLOR = 'var(--brand)'
 const SIDEBAR_EXPANDED_WIDTH = 260
 const SIDEBAR_COLLAPSED_WIDTH = 72
 
@@ -238,7 +238,7 @@ function SidebarBrand({ collapsed }: { collapsed: boolean }) {
     )}>
       <div className={cn(
         'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-sm transition-all duration-300',
-        'bg-white ring-1 ring-purple-100 dark:bg-purple-950/50 dark:ring-purple-800/50',
+        'bg-white ring-1 ring-primary/10 dark:bg-primary/10 dark:ring-primary/40',
       )}>
         <Image
           src="/puspa-logo-official.png"
@@ -255,7 +255,7 @@ function SidebarBrand({ collapsed }: { collapsed: boolean }) {
           collapsed ? 'max-h-0 max-w-0 opacity-0' : 'max-h-20 max-w-[200px] opacity-100',
         )}
       >
-        <span className="text-lg font-bold tracking-tight whitespace-nowrap" style={{ color: BRAND_COLOR }}>
+        <span className="text-lg font-bold tracking-tight whitespace-nowrap text-brand">
           PUSPA
         </span>
         <span className="text-[11px] leading-tight text-muted-foreground whitespace-nowrap">
@@ -290,12 +290,12 @@ function NavItemButton({
       className={cn(
         'group relative flex w-full items-center gap-3 rounded-lg text-sm font-medium transition-all duration-200',
         collapsed ? 'justify-center px-2 py-2.5' : 'px-3 py-2 pl-3.5',
-        'outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2',
+        'outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
         isActive ? 'text-white shadow-sm' : 'text-muted-foreground hover:bg-muted hover:text-foreground',
       )}
       style={
         isActive
-          ? { background: `linear-gradient(135deg, ${BRAND_COLOR}, #6B21A8)`, boxShadow: `0 2px 8px ${BRAND_COLOR}30` }
+          ? { background: 'linear-gradient(135deg, var(--brand), hsl(var(--primary)))', boxShadow: '0 2px 8px oklch(0.398 0.145 294.75 / 0.19)' }
           : undefined
       }
     >
@@ -385,7 +385,7 @@ function RoleSwitcher({ collapsed }: { collapsed: boolean }) {
   const roleBadgeColor: Record<UserRole, string> = {
     staff: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400',
     admin: 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400',
-    developer: 'bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-400',
+    developer: 'bg-primary/5 text-primary dark:bg-primary/10 dark:text-primary',
   }
 
   const switcher = (
@@ -409,7 +409,7 @@ function RoleSwitcher({ collapsed }: { collapsed: boolean }) {
         'flex flex-col overflow-hidden transition-all duration-300',
         collapsed ? 'max-h-0 max-w-0 opacity-0' : 'max-h-10 max-w-[160px] opacity-100',
       )}>
-        <span className="text-[10px] font-semibold whitespace-nowrap" style={{ color: BRAND_COLOR }}>
+        <span className="text-[10px] font-semibold whitespace-nowrap text-brand">
           Peranan: {config.label}
         </span>
         <span className="text-[9px] text-muted-foreground whitespace-nowrap">{config.description}</span>
@@ -422,7 +422,7 @@ function RoleSwitcher({ collapsed }: { collapsed: boolean }) {
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>{switcher}</TooltipTrigger>
         <TooltipContent side="right" sideOffset={8} className="text-xs">
-          <div className="font-semibold" style={{ color: BRAND_COLOR }}>Peranan: {config.label}</div>
+          <div className="font-semibold text-brand">Peranan: {config.label}</div>
           <div className="text-muted-foreground">Klik untuk tukar</div>
         </TooltipContent>
       </Tooltip>
@@ -445,7 +445,7 @@ function SidebarFooter({ collapsed }: { collapsed: boolean }) {
         collapsed ? 'justify-center' : '',
       )}>
         <div className={cn(
-          'flex shrink-0 items-center justify-center rounded-lg bg-purple-50 dark:bg-purple-950/40',
+          'flex shrink-0 items-center justify-center rounded-lg bg-primary/5 dark:bg-primary/10',
           collapsed ? 'h-7 w-7' : 'h-8 w-8',
         )}>
           <Image src="/puspa-logo-official.png" alt="PUSPA" width={collapsed ? 16 : 20} height={collapsed ? 16 : 20} className="object-contain" />
@@ -454,7 +454,7 @@ function SidebarFooter({ collapsed }: { collapsed: boolean }) {
           'flex flex-col gap-0.5 overflow-hidden transition-all duration-300',
           collapsed ? 'max-h-0 max-w-0 opacity-0' : 'max-h-10 max-w-[180px] opacity-100',
         )}>
-          <span className="text-[11px] font-semibold whitespace-nowrap" style={{ color: BRAND_COLOR }}>PUSPA KL & Selangor</span>
+          <span className="text-[11px] font-semibold whitespace-nowrap text-brand">PUSPA KL & Selangor</span>
           <span className="text-[10px] text-muted-foreground whitespace-nowrap">v3.0.0</span>
         </div>
       </div>

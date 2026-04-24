@@ -58,7 +58,7 @@ export default function AIPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Chat */}
         <Card className="lg:col-span-2">
-          <CardHeader><div className="flex items-center gap-2"><Bot className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle><ScrambledText scrambleChars=".:!@#$%^&*">Pembantu AI PUSPA</ScrambledText></CardTitle></div><CardDescription>Tanya apa-apa tentang data dan operasi PUSPA</CardDescription></CardHeader>
+          <CardHeader><div className="flex items-center gap-2"><Bot className="h-5 w-5 text-brand" /><CardTitle><ScrambledText scrambleChars=".:!@#$%^&*">Pembantu AI PUSPA</ScrambledText></CardTitle></div><CardDescription>Tanya apa-apa tentang data dan operasi PUSPA</CardDescription></CardHeader>
           <CardContent>
             <div ref={scrollRef} className="mb-4 h-[400px] overflow-y-auto rounded-lg border bg-muted/30 p-4 space-y-3">
               {messages.length === 0 && (
@@ -70,14 +70,14 @@ export default function AIPage() {
               )}
               {messages.map((m, i) => (
                 <div key={i} className={`flex gap-2 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  {m.role === 'assistant' && <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/40"><Bot className="h-4 w-4 text-purple-600" /></div>}
+                  {m.role === 'assistant' && <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 dark:bg-primary/10"><Bot className="h-4 w-4 text-primary" /></div>}
                   <div className={`max-w-[75%] rounded-xl px-4 py-2.5 text-sm ${m.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-card border shadow-sm'}`}>
                     <p className="whitespace-pre-wrap">{m.content}</p>
                   </div>
                   {m.role === 'user' && <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted"><User className="h-4 w-4" /></div>}
                 </div>
               ))}
-              {sending && <div className="flex gap-2"><div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/40"><Bot className="h-4 w-4 text-purple-600" /></div><div className="rounded-xl bg-card border px-4 py-3"><Skeleton className="h-4 w-32" /></div></div>}
+              {sending && <div className="flex gap-2"><div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 dark:bg-primary/10"><Bot className="h-4 w-4 text-primary" /></div><div className="rounded-xl bg-card border px-4 py-3"><Skeleton className="h-4 w-32" /></div></div>}
             </div>
             <div className="flex gap-2">
               <Input placeholder="Taip mesej anda…" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSend()} disabled={sending} />
@@ -88,7 +88,7 @@ export default function AIPage() {
 
         {/* Analytics */}
         <Card>
-          <CardHeader><div className="flex items-center gap-2"><BarChart3 className="h-5 w-5" style={{ color: '#4B0082' }} /><CardTitle>Analisis AI</CardTitle></div><CardDescription>Insight daripada data organisasi</CardDescription></CardHeader>
+          <CardHeader><div className="flex items-center gap-2"><BarChart3 className="h-5 w-5 text-brand" /><CardTitle>Analisis AI</CardTitle></div><CardDescription>Insight daripada data organisasi</CardDescription></CardHeader>
           <CardContent>
             {loadingInsights ? (
               <div className="space-y-3">{Array.from({length:4}).map((_,i)=><Skeleton key={i} className="h-16 rounded-lg" />)}</div>

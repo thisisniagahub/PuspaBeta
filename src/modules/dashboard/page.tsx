@@ -45,7 +45,7 @@ interface ComplianceItem { id: string; item: string; category: string; isComplet
 
 const FUND_COLORS: Record<string, string> = { zakat: '#7c3aed', sadaqah: '#059669', waqf: '#d97706', infaq: '#2563eb', general: '#6b7280' }
 const ACTIVITY_STYLES: Record<string, string> = {
-  case: 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300',
+  case: 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary',
   donation: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
   member: 'bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-300',
   programme: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
@@ -212,18 +212,18 @@ export default function DashboardPage() {
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       {/* Hero Banner */}
       <AnimatedContent distance={30} direction="vertical" duration={0.4}>
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#4B0082] via-[#6B21A8] to-[#7C3AED] p-6 text-white shadow-xl shadow-purple-900/30 sm:p-8">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand via-primary to-primary/70 p-6 text-white shadow-xl shadow-primary/20 sm:p-8">
         <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/5 blur-2xl" />
-        <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-purple-400/10 blur-2xl" />
+        <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-primary/10 blur-2xl" />
         <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-5">
             <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/95 shadow-lg ring-1 ring-white/50">
               <Image src="/puspa-logo-official.png" alt="PUSPA Logo" width={52} height={52} className="object-contain" priority />
             </div>
             <div className="min-w-0">
-              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl"><GradientText colors={['#4B0082', '#8B5CF6', '#4B0082']} animationSpeed={4}>{getGreeting()}, Admin</GradientText></h1>
-              <p className="mt-1 text-sm text-purple-100 sm:text-base">Ringkasan data dan statistik terkini organisasi anda.</p>
-              <p className="mt-1 text-xs text-purple-200/70">Pertubuhan Urus Peduli Asnaf KL &amp; Selangor &bull; PPM-006-14-14032020</p>
+              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl"><GradientText colors={['var(--brand)', '#8B5CF6', 'var(--brand)']} animationSpeed={4}>{getGreeting()}, Admin</GradientText></h1>
+              <p className="mt-1 text-sm text-white/80 sm:text-base">Ringkasan data dan statistik terkini organisasi anda.</p>
+              <p className="mt-1 text-xs text-white/50">Pertubuhan Urus Peduli Asnaf KL &amp; Selangor &bull; PPM-006-14-14032020</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
@@ -235,7 +235,7 @@ export default function DashboardPage() {
             ].map(p => (
               <div key={p.lbl} className="flex items-center gap-2 rounded-xl bg-white/15 px-3 py-2 backdrop-blur-sm ring-1 ring-white/10 sm:px-4 sm:py-2.5">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 sm:h-9 sm:w-9">{p.icon}</div>
-                <div className="flex flex-col"><span className="text-base font-bold leading-tight sm:text-lg">{p.val}</span><span className="text-[10px] leading-tight text-purple-200 sm:text-[11px]">{p.lbl}</span></div>
+                <div className="flex flex-col"><span className="text-base font-bold leading-tight sm:text-lg">{p.val}</span><span className="text-[10px] leading-tight text-white/70 sm:text-[11px]">{p.lbl}</span></div>
               </div>
             ))}
           </div>
@@ -257,8 +257,8 @@ export default function DashboardPage() {
       {/* Tindakan Seterusnya */}
       <div>
         <div className="mb-3 flex items-center gap-2">
-          <ClipboardList className="h-4 w-4" style={{ color: '#4B0082' }} />
-          <h2 className="text-sm font-semibold" style={{ color: '#4B0082' }}>Tindakan Seterusnya</h2>
+          <ClipboardList className="h-4 w-4 text-brand" />
+          <h2 className="text-sm font-semibold text-brand">Tindakan Seterusnya</h2>
           <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">Perlu perhatian</span>
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -269,12 +269,12 @@ export default function DashboardPage() {
             { label: 'Program Minggu Ini', desc: 'Program perlu dijalankan', icon: Calendar, color: 'purple', view: 'programmes' as const },
           ].map(a => (
             <button key={a.label} type="button" onClick={() => useAppStore.getState().setView(a.view)}
-              className="group flex items-start gap-3 rounded-xl border bg-card p-4 text-left transition-all hover:shadow-md hover:border-purple-200 dark:hover:border-purple-800">
-              <div className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-lg', a.color === 'amber' ? 'bg-amber-50 dark:bg-amber-950/40' : a.color === 'emerald' ? 'bg-emerald-50 dark:bg-emerald-950/40' : a.color === 'blue' ? 'bg-blue-50 dark:bg-blue-950/40' : 'bg-purple-50 dark:bg-purple-950/40')}>
-                <a.icon className={cn('h-4 w-4', a.color === 'amber' ? 'text-amber-600' : a.color === 'emerald' ? 'text-emerald-600' : a.color === 'blue' ? 'text-blue-600' : 'text-purple-600')} />
+              className="group flex items-start gap-3 rounded-xl border bg-card p-4 text-left transition-all hover:shadow-md hover:border-primary/20 dark:hover:border-primary/30">
+              <div className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-lg', a.color === 'amber' ? 'bg-amber-50 dark:bg-amber-950/40' : a.color === 'emerald' ? 'bg-emerald-50 dark:bg-emerald-950/40' : a.color === 'blue' ? 'bg-blue-50 dark:bg-blue-950/40' : 'bg-primary/5 dark:bg-primary/10')}>
+                <a.icon className={cn('h-4 w-4', a.color === 'amber' ? 'text-amber-600' : a.color === 'emerald' ? 'text-emerald-600' : a.color === 'blue' ? 'text-blue-600' : 'text-primary')} />
               </div>
-              <div className="min-w-0 flex-1"><p className="text-sm font-medium group-hover:text-purple-700 transition-colors">{a.label}</p><p className="mt-0.5 text-xs text-muted-foreground">{a.desc}</p></div>
-              <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground/50 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all" />
+              <div className="min-w-0 flex-1"><p className="text-sm font-medium group-hover:text-primary transition-colors">{a.label}</p><p className="mt-0.5 text-xs text-muted-foreground">{a.desc}</p></div>
+              <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground/50 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
             </button>
           ))}
         </div>
@@ -283,8 +283,8 @@ export default function DashboardPage() {
       {/* Pipeline Workflow */}
       <div>
         <div className="mb-3 flex items-center gap-2">
-          <Activity className="h-4 w-4" style={{ color: '#4B0082' }} />
-          <h2 className="text-sm font-semibold" style={{ color: '#4B0082' }}>Pipeline Workflow</h2>
+          <Activity className="h-4 w-4 text-brand" />
+          <h2 className="text-sm font-semibold text-brand">Pipeline Workflow</h2>
         </div>
         <div className="overflow-x-auto rounded-xl border bg-card p-4">
           <div className="flex items-center gap-1 min-w-[420px] sm:min-w-[600px]">

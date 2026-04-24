@@ -94,8 +94,8 @@ export default function PredictivePage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: '#4B008215' }}>
-          <BarChart3 className="h-5 w-5" style={{ color: '#4B0082' }} />
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted">
+          <BarChart3 className="h-5 w-5 text-brand" />
         </div>
         <div>
           <h1 className="text-2xl font-bold">Analisis Ramalan</h1>
@@ -121,14 +121,14 @@ export default function PredictivePage() {
         <TabsContent value="forecast" className="mt-4 space-y-4">
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             {[
-              { label: 'Kes Diramal (Bulan Depan)', value: predictedCases, icon: TrendingUp, color: '#4B0082', trend: '+12%' },
+              { label: 'Kes Diramal (Bulan Depan)', value: predictedCases, icon: TrendingUp, color: 'var(--brand)', bgColor: 'var(--brand-muted)', trend: '+12%' },
               { label: 'Dana Diperlukan', value: fmtCurrency(fundRequired), icon: Target, color: '#d97706', trend: '+8%' },
               { label: 'Defisit Dana', value: fmtCurrency(shortfall), icon: TrendingDown, color: '#dc2626', trend: '-5%' },
               { label: 'Tahap Keyakinan', value: '94.2%', icon: BarChart3, color: '#059669', trend: '+2.1%' },
             ].map(s => (
               <Card key={s.label}><CardContent className="p-4">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg" style={{ backgroundColor: `${s.color}15` }}><s.icon className="h-4.5 w-4.5" style={{ color: s.color }} /></div>
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg" style={{ backgroundColor: s.bgColor || `${s.color}15` }}><s.icon className="h-4.5 w-4.5" style={{ color: s.color }} /></div>
                   <Badge variant="outline" className="text-[10px] ml-auto">{s.trend}</Badge>
                 </div>
                 <p className="text-xs text-muted-foreground">{s.label}</p>
@@ -147,7 +147,7 @@ export default function PredictivePage() {
                   <YAxis className="text-xs" />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="actual" stroke="#4B0082" strokeWidth={2} name="Sebenar" dot={{ r: 4 }} />
+                  <Line type="monotone" dataKey="actual" stroke="var(--brand)" strokeWidth={2} name="Sebenar" dot={{ r: 4 }} />
                   <Line type="monotone" dataKey="predicted" stroke="#9333ea" strokeWidth={2} strokeDasharray="5 5" name="Ramalan" dot={{ r: 4 }} />
                 </LineChart>
               </ResponsiveContainer>
@@ -165,7 +165,7 @@ export default function PredictivePage() {
                   { text: 'Jadualkan semula program wakaf Q3 untuk menyelaraskan dengan ketersediaan dana', priority: 'low' },
                 ].map((rec, idx) => (
                   <div key={idx} className="flex items-start gap-3 rounded-lg border p-3">
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white" style={{ backgroundColor: '#4B0082' }}>{idx + 1}</div>
+                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white bg-brand">{idx + 1}</div>
                     <div className="flex-1">
                       <p className="text-sm">{rec.text}</p>
                       <Badge variant="outline" className={cn('mt-1 text-[10px]', rec.priority === 'high' ? 'border-red-300 text-red-700' : rec.priority === 'medium' ? 'border-yellow-300 text-yellow-700' : 'border-gray-300 text-gray-700')}>{rec.priority === 'high' ? 'Segera' : rec.priority === 'medium' ? 'Sederhana' : 'Rendah'}</Badge>
@@ -188,7 +188,7 @@ export default function PredictivePage() {
                   <YAxis type="category" dataKey="category" className="text-xs" width={120} />
                   <Tooltip formatter={(v: number) => fmtCurrency(v)} />
                   <Legend />
-                  <Bar dataKey="current" fill="#4B0082" name="Semasa" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="current" fill="var(--brand)" name="Semasa" radius={[0, 4, 4, 0]} />
                   <Bar dataKey="recommended" fill="#9333ea" name="Cadangan" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>

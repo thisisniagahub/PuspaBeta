@@ -43,7 +43,7 @@ const channelIcons: Record<string, React.ComponentType<{ className?: string }>> 
 const channelColors: Record<string, string> = {
   whatsapp: 'bg-green-100 text-green-700',
   telegram: 'bg-blue-100 text-blue-700',
-  web: 'bg-purple-100 text-purple-700',
+  web: 'bg-primary/10 text-primary',
   email: 'bg-amber-100 text-amber-700',
 }
 
@@ -140,8 +140,8 @@ export default function MultiAgentPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: '#4B008215' }}>
-          <LayoutGrid className="h-5 w-5" style={{ color: '#4B0082' }} />
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted">
+          <LayoutGrid className="h-5 w-5 text-brand" />
         </div>
         <div>
           <h1 className="text-2xl font-bold">Berbilang Ejen</h1>
@@ -164,8 +164,8 @@ export default function MultiAgentPage() {
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <div className="relative">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl" style={{ backgroundColor: '#4B008215' }}>
-                          <Bot className="h-6 w-6" style={{ color: '#4B0082' }} />
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-muted">
+                          <Bot className="h-6 w-6 text-brand" />
                         </div>
                         <div className={cn('absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white', statusColors[agent.status])} />
                       </div>
@@ -231,7 +231,7 @@ export default function MultiAgentPage() {
                 <Label>Saluran</Label>
                 <div className="flex gap-2 flex-wrap">
                   {['whatsapp', 'telegram', 'web', 'email'].map(ch => (
-                    <Button key={ch} variant={form.channels.includes(ch) ? 'default' : 'outline'} size="sm" onClick={() => toggleChannel(ch)} className="gap-1.5 text-xs" style={form.channels.includes(ch) ? { backgroundColor: '#4B0082' } : {}}>
+                    <Button key={ch} variant={form.channels.includes(ch) ? 'default' : 'outline'} size="sm" onClick={() => toggleChannel(ch)} className={cn("gap-1.5 text-xs", form.channels.includes(ch) && "bg-brand")}>
                       {ch}
                     </Button>
                   ))}
@@ -244,7 +244,7 @@ export default function MultiAgentPage() {
                 <Label>Aktifkan Memori Ejen</Label>
               </div>
               <div className="flex gap-2">
-                <Button onClick={handleSaveAgent} disabled={saving} style={{ backgroundColor: '#4B0082' }}>
+                <Button onClick={handleSaveAgent} disabled={saving} className="bg-brand">
                   {saving ? 'Menyimpan…' : editingAgent ? 'Kemas Kini Ejen' : 'Tambah Ejen'}
                 </Button>
                 {editingAgent && (
@@ -268,7 +268,7 @@ export default function MultiAgentPage() {
                     <div className="flex items-center gap-2 mb-3">
                       {route.channel === 'WhatsApp' && <Smartphone className="h-4 w-4 text-green-600" />}
                       {route.channel === 'Telegram' && <MessageSquare className="h-4 w-4 text-blue-600" />}
-                      {route.channel === 'Web Chat' && <LayoutGrid className="h-4 w-4 text-purple-600" />}
+                      {route.channel === 'Web Chat' && <LayoutGrid className="h-4 w-4 text-primary" />}
                       {route.channel === 'E-mel' && <Mail className="h-4 w-4 text-amber-600" />}
                       <span className="font-semibold text-sm">{route.channel}</span>
                     </div>
@@ -277,7 +277,7 @@ export default function MultiAgentPage() {
                       {route.agents.map(agentName => {
                         const agent = agents.find(a => a.name === agentName)
                         return (
-                          <Badge key={agentName} className="gap-1" style={{ backgroundColor: '#4B008215', color: '#4B0082' }}>
+                          <Badge key={agentName} className="gap-1 bg-brand-muted text-brand">
                             <Bot className="h-3 w-3" /> {agent?.displayName || agentName}
                           </Badge>
                         )
@@ -297,27 +297,27 @@ export default function MultiAgentPage() {
             <CardContent>
               <div className="space-y-3">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Badge style={{ backgroundColor: '#4B008215', color: '#4B0082' }} className="gap-1"><Bot className="h-3 w-3" /> Asnaf</Badge>
+                  <Badge className="gap-1 bg-brand-muted text-brand"><Bot className="h-3 w-3" /> Asnaf</Badge>
                   <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  <Badge style={{ backgroundColor: '#4B008215', color: '#4B0082' }} className="gap-1"><Bot className="h-3 w-3" /> Operasi</Badge>
+                  <Badge className="gap-1 bg-brand-muted text-brand"><Bot className="h-3 w-3" /> Operasi</Badge>
                   <span className="text-xs text-muted-foreground">— Hantar kes untuk pemprosesan</span>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Badge style={{ backgroundColor: '#4B008215', color: '#4B0082' }} className="gap-1"><Bot className="h-3 w-3" /> Operasi</Badge>
+                  <Badge className="gap-1 bg-brand-muted text-brand"><Bot className="h-3 w-3" /> Operasi</Badge>
                   <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  <Badge style={{ backgroundColor: '#4B008215', color: '#4B0082' }} className="gap-1"><Bot className="h-3 w-3" /> Kewangan</Badge>
+                  <Badge className="gap-1 bg-brand-muted text-brand"><Bot className="h-3 w-3" /> Kewangan</Badge>
                   <span className="text-xs text-muted-foreground">— Rujuk hal kewangan</span>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Badge style={{ backgroundColor: '#4B008215', color: '#4B0082' }} className="gap-1"><Bot className="h-3 w-3" /> Kewangan</Badge>
+                  <Badge className="gap-1 bg-brand-muted text-brand"><Bot className="h-3 w-3" /> Kewangan</Badge>
                   <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  <Badge style={{ backgroundColor: '#4B008215', color: '#4B0082' }} className="gap-1"><Bot className="h-3 w-3" /> Compliance</Badge>
+                  <Badge className="gap-1 bg-brand-muted text-brand"><Bot className="h-3 w-3" /> Compliance</Badge>
                   <span className="text-xs text-muted-foreground">— Semak pematuhan</span>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Badge style={{ backgroundColor: '#4B008215', color: '#4B0082' }} className="gap-1"><Bot className="h-3 w-3" /> Compliance</Badge>
+                  <Badge className="gap-1 bg-brand-muted text-brand"><Bot className="h-3 w-3" /> Compliance</Badge>
                   <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                  <Badge style={{ backgroundColor: '#4B008215', color: '#4B0082' }} className="gap-1"><Bot className="h-3 w-3" /> Operasi</Badge>
+                  <Badge className="gap-1 bg-brand-muted text-brand"><Bot className="h-3 w-3" /> Operasi</Badge>
                   <span className="text-xs text-muted-foreground">— Laporkan isu</span>
                 </div>
               </div>

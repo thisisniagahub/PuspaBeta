@@ -39,7 +39,7 @@ interface ContractLog {
 }
 
 const txTypeColors: Record<string, string> = {
-  zakat_distribution: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400',
+  zakat_distribution: 'bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary',
   sadaqah_receipt: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400',
   waqf_allocation: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400',
   infaq_transfer: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400',
@@ -47,7 +47,7 @@ const txTypeColors: Record<string, string> = {
 }
 
 const fundTypeColors: Record<string, string> = {
-  zakat: 'bg-purple-500',
+  zakat: 'bg-primary',
   sadaqah: 'bg-green-500',
   waqf: 'bg-blue-500',
   infaq: 'bg-amber-500',
@@ -122,8 +122,8 @@ export default function AuditTrailPage() {
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: '#4B008215' }}>
-          <ShieldCheck className="h-5 w-5" style={{ color: '#4B0082' }} />
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted">
+          <ShieldCheck className="h-5 w-5 text-brand" />
         </div>
         <div>
           <h1 className="text-2xl font-bold">Jejak Audit</h1>
@@ -133,13 +133,13 @@ export default function AuditTrailPage() {
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {[
-          { label: 'Jumlah Transaksi', value: totalTransactions, icon: ArrowRightLeft, color: '#4B0082' },
+          { label: 'Jumlah Transaksi', value: totalTransactions, icon: ArrowRightLeft, color: 'var(--brand)', bgColor: 'var(--brand-muted)' },
           { label: 'Disahkan', value: verifiedCount, icon: CheckCircle2, color: '#059669' },
           { label: 'Menunggu', value: pendingCount, icon: Clock, color: '#d97706' },
           { label: 'Jumlah Nilai', value: fmtCurrency(totalValue), icon: ShieldCheck, color: '#2563eb' },
         ].map(s => (
           <Card key={s.label}><CardContent className="flex items-center gap-3 p-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: `${s.color}15` }}><s.icon className="h-5 w-5" style={{ color: s.color }} /></div>
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: s.bgColor || `${s.color}15` }}><s.icon className="h-5 w-5" style={{ color: s.color }} /></div>
             <div><p className="text-xs text-muted-foreground">{s.label}</p><p className="text-xl font-bold">{s.value}</p></div>
           </CardContent></Card>
         ))}
@@ -155,8 +155,8 @@ export default function AuditTrailPage() {
               <YAxis className="text-xs" tickFormatter={v => `${(v / 1000).toFixed(0)}K`} />
               <Tooltip formatter={(v: number) => fmtCurrency(v)} />
               <Legend />
-              <Bar dataKey="inflow" fill="#4B0082" name="Masuk" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="outflow" fill="#9333ea" name="Keluar" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="inflow" fill="var(--brand)" name="Masuk" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="outflow" fill="hsl(var(--primary))" name="Keluar" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>
@@ -214,7 +214,7 @@ export default function AuditTrailPage() {
                 <Label>Parameter Fungsi</Label>
                 <Textarea placeholder='cth: {"function": "distribute", "params": ["0xaddr...", "5000"]}' rows={3} value={contractForm.params} onChange={e => setContractForm(p => ({ ...p, params: e.target.value }))} />
               </div>
-              <Button className="gap-2" style={{ backgroundColor: '#4B0082' }}><FileCode2 className="h-4 w-4" /> Jalankan Kontrak</Button>
+              <Button className="gap-2 bg-brand"><FileCode2 className="h-4 w-4" /> Jalankan Kontrak</Button>
             </CardContent>
           </Card>
 
@@ -245,13 +245,13 @@ export default function AuditTrailPage() {
             <CardContent className="space-y-4">
               <div className="flex gap-2">
                 <Input placeholder="Masukkan hash transaksi (0x…)" value={verifyHash} onChange={e => setVerifyHash(e.target.value)} className="font-mono text-sm" />
-                <Button onClick={handleVerify} disabled={verifying} className="gap-2 shrink-0" style={{ backgroundColor: '#4B0082' }}>
+                <Button onClick={handleVerify} disabled={verifying} className="gap-2 shrink-0 bg-brand">
                   {verifying ? 'Menyahkan…' : <><Search className="h-4 w-4" /> Sahkan</>}
                 </Button>
               </div>
 
               {verifyResult && (
-                <div className="rounded-lg border-2 p-5 space-y-3" style={{ borderColor: '#4B008240' }}>
+                <div className="rounded-lg border-2 p-5 space-y-3 border-brand/25">
                   <div className="flex items-center gap-2 mb-3">
                     <CheckCircle2 className="h-5 w-5 text-green-600" />
                     <span className="font-semibold text-green-700">Transaksi Disahkan</span>
