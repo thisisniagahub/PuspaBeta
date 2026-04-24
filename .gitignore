@@ -50,5 +50,20 @@ test
 prompt
 
 server.log
+
+# Database
+*.db
+*.db-journal
+
 # Skills directory
 /skills/
+
+# Agent context
+/agent-ctx/
+
+# Download/Upload directories
+/download/
+/upload/
+
+# Z scripts
+/.zscripts/
