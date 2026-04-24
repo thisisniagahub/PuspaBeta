@@ -9,7 +9,7 @@ export type ViewId =
   | 'triage' | 'notifications' | 'multi-channel'
   | 'onboarding' | 'automation-rules' | 'predictive'
   | 'skills' | 'agent-memory' | 'multi-agent'
-  | 'audit-trail'
+  | 'audit-trail' | 'kelas-ai'
 
 export interface NavItem {
   id: ViewId

@@ -16,7 +16,7 @@ import {
   CalendarDays, Package, ChevronLeft, ChevronRight, Menu,
   Cpu, Plug, Globe, Terminal, Wrench, Zap,
   ArrowRightLeft, LayoutGrid, Siren, Bell, MessageSquare,
-  UserPlus, BarChart3, Brain, ShieldCheck
+  UserPlus, BarChart3, Brain, ShieldCheck, GraduationCap
 } from 'lucide-react'
 import type { ViewId } from '@/types'
 
@@ -95,6 +95,13 @@ const ALL_GROUPS: NavGroup[] = [
       { id: 'reports', label: 'Laporan Kewangan', icon: FileBarChart, roles: ['admin', 'developer'] },
       { id: 'ekyc', label: 'eKYC', icon: ScanFace, roles: ['admin', 'developer'] },
       { id: 'tapsecure', label: 'TapSecure', icon: Smartphone, roles: ['admin', 'developer'] },
+    ],
+  },
+  {
+    title: 'Keusahawanan',
+    roles: ['staff', 'admin', 'developer'],
+    items: [
+      { id: 'kelas-ai', label: 'Kelas AI & Vibe Coding', icon: GraduationCap, roles: ['staff', 'admin', 'developer'] },
     ],
   },
   {

@@ -49,6 +49,7 @@ import Skills from '@/modules/skills/page'
 import AgentMemory from '@/modules/agent-memory/page'
 import MultiAgent from '@/modules/multi-agent/page'
 import AuditTrail from '@/modules/audit-trail/page'
+import KelasAI from '@/modules/kelas-ai/page'
 
 function PageLoader() {
   return (
@@ -106,6 +107,7 @@ const viewLabels: Record<string, string> = {
   'agent-memory': 'Memori Ejen',
   'multi-agent': 'Berbilang Ejen',
   'audit-trail': 'Jejak Audit',
+  'kelas-ai': 'Kelas AI & Vibe Coding',
 }
 
 function ViewRenderer({ view }: { view: string }) {
@@ -147,6 +149,7 @@ function ViewRenderer({ view }: { view: string }) {
     case 'agent-memory': return <AgentMemory />
     case 'multi-agent': return <MultiAgent />
     case 'audit-trail': return <AuditTrail />
+    case 'kelas-ai': return <KelasAI />
     default: return <Dashboard />
   }
 }
