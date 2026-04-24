@@ -122,3 +122,25 @@ Stage Summary:
 - **Zero console errors** — no HTML nesting, no missing DialogTitle/Description
 - **Consistent UI** — all selects use shadcn, all delete confirmations use AlertDialog
 - 10 AI/Automation modules still use mock data (API endpoints exist but frontend not yet connected — medium priority, not breaking)
+
+---
+Task ID: init-deep
+Agent: Z.ai Code (Main Orchestrator)
+Task: Generate hierarchical AGENTS.md knowledge base files (init-deep command)
+
+Work Log:
+- Phase 1: Fired 3 parallel explore agents to analyze project structure, core architecture, and all modules
+- Ran bash analysis to check existing AGENTS.md files (3 found), project scale (194 TS/TSX files, 24,482 lines, 2.0M)
+- Phase 2: Scored all directories for AGENTS.md placement — determined 8 locations (3 existing + 5 new)
+- Phase 3: Generated all AGENTS.md files in parallel using 7 sub-agents:
+  - Updated: /AGENTS.md (86→669 lines), src/app/api/AGENTS.md, src/modules/AGENTS.md
+  - Created: src/components/AGENTS.md (302 lines), src/lib/AGENTS.md (188 lines), src/stores/AGENTS.md (90 lines), src/modules/openclaw/AGENTS.md (169 lines), prisma/AGENTS.md (108 lines)
+- Phase 4: Validated all 8 files exist, total 1,658 lines, lint clean, dev server HTTP 200
+- Added SUB-AGENTS.md cross-reference to src/modules/AGENTS.md
+
+Stage Summary:
+- **8 AGENTS.md files** generated across the project hierarchy (1,658 total lines)
+- Coverage: root, API routes, modules, components, lib utilities, stores, openclaw sub-module, prisma database
+- Each file includes: overview, structure, where-to-look, conventions, anti-patterns
+- Cross-references between parent and child AGENTS.md files
+- Zero lint errors, dev server running

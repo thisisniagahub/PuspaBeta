@@ -39,6 +39,9 @@ Self-contained page components rendered by ViewRenderer switch in `src/app/page.
 - Pagination: client-side sort with `useMemo`, server-side fetch with `page`/`pageSize` params
 - 10 unconnected AI modules have matching `/api/v1/<module>` endpoints ready — frontend just needs `api.get()` replacing mock arrays
 
+## SUB-AGENTS.md
+- `openclaw/AGENTS.md` — Detailed reference for the 7 OpenClaw sub-modules (developer-only AI Ops framework)
+
 ## ANTI-PATTERNS
 - ❌ Do NOT create `src/app/<module>/page.tsx` — routing is ViewRenderer-based, not file-based
 - ❌ Do NOT extract components into separate files — modules are intentionally self-contained
