@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -129,7 +129,7 @@ export default function ActivitiesPage() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>{editing ? 'Edit Aktiviti' : 'Tambah Aktiviti Baharu'}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? 'Edit Aktiviti' : 'Tambah Aktiviti Baharu'}</DialogTitle><DialogDescription className="sr-only">Borang untuk menambah atau mengedit aktiviti</DialogDescription></DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2"><Label>Tajuk *</Label><Input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} /></div>
             <div className="grid gap-2"><Label>Penerangan</Label><Textarea value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} /></div>

@@ -259,10 +259,10 @@ export default function AuditTrailPage() {
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div><span className="text-muted-foreground">Hash:</span><p className="font-mono text-xs mt-0.5 break-all">{verifyResult.txHash}</p></div>
                     <div><span className="text-muted-foreground">Blok:</span><p className="font-mono mt-0.5">#{verifyResult.blockNumber}</p></div>
-                    <div><span className="text-muted-foreground">Jenis:</span><p className="mt-0.5"><Badge className={txTypeColors[verifyResult.txType]}>{verifyResult.txType.replace('_', ' ')}</Badge></p></div>
+                    <div><span className="text-muted-foreground">Jenis:</span><div className="mt-0.5"><Badge className={txTypeColors[verifyResult.txType]}>{verifyResult.txType.replace('_', ' ')}</Badge></div></div>
                     <div><span className="text-muted-foreground">Jenis Dana:</span><p className="mt-0.5 capitalize">{verifyResult.fundType}</p></div>
                     <div><span className="text-muted-foreground">Jumlah:</span><p className="font-bold mt-0.5">{fmtCurrency(verifyResult.amount)}</p></div>
-                    <div><span className="text-muted-foreground">Status:</span><p className="mt-0.5"><Badge className="bg-green-600 text-white">{verifyResult.status}</Badge></p></div>
+                    <div><span className="text-muted-foreground">Status:</span><div className="mt-0.5"><Badge className="bg-green-600 text-white">{verifyResult.status}</Badge></div></div>
                     <div><span className="text-muted-foreground">Dari:</span><p className="mt-0.5 text-xs">{verifyResult.fromEntity}</p></div>
                     <div><span className="text-muted-foreground">Kepada:</span><p className="mt-0.5 text-xs">{verifyResult.toEntity}</p></div>
                     <div className="col-span-2"><span className="text-muted-foreground">Masa:</span><p className="mt-0.5">{new Date(verifyResult.timestamp).toLocaleString('ms-MY')}</p></div>

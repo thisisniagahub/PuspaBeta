@@ -430,7 +430,7 @@ export default function MembersPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{card.title}</p>
-                  <p className="text-2xl font-bold mt-1">{loading ? <Skeleton className="h-7 w-12 inline-block" /> : card.value.toLocaleString('ms-MY')}</p>
+                  <div className="text-2xl font-bold mt-1">{loading ? <Skeleton className="h-7 w-12 inline-block" /> : card.value.toLocaleString('ms-MY')}</div>
                 </div>
                 <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${card.bg}`}>
                   <card.icon className={`h-5 w-5 ${card.color}`} />

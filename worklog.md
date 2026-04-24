@@ -76,3 +76,23 @@ Stage Summary:
 - 99+ API route endpoints (57 original + 42 new)
 - 37 module pages (27 original + 10 new)
 - All Fasa 1-4 features implemented: Triage Engine, Notifications, Multi-Channel, Onboarding Bot, Automation Rules, Predictive Analytics, ClawHub Skills, Agent Memory, Multi-Agent Config, Blockchain Audit Trail, Smart Contracts
+
+---
+Task ID: bugfix-1
+Agent: Z.ai Code (Main Orchestrator)
+Task: Fix all console errors reported by user (3 errors: DialogTitle missing, p containing div, p containing nested div)
+
+Work Log:
+- Fixed SheetContent in app-sidebar.tsx missing SheetTitle for accessibility — added `<SheetTitle className="sr-only">Menu Navigasi</SheetTitle>`
+- Fixed `<p>` containing `<Skeleton>` (renders as `<div>`) in members/page.tsx — changed `<p>` to `<div>`
+- Fixed `<p>` containing `<Badge>` in audit-trail/page.tsx — changed 2 `<p>` to `<div>` (lines with txType and status badges)
+- Fixed `<p>` containing `<Badge>` in kelas-ai/page.tsx — changed `<p>` to `<div>` (misi section)
+- Added missing `DialogDescription` (with `sr-only` class) to 11 dialogs across: activities, admin, cases, compliance, disbursements, documents, donations, donors, openclaw/automation, programmes, volunteers
+- Added missing `SheetDescription` (with `sr-only` class) to 2 sheets: cases, donors
+- Lint passes clean (0 errors)
+- Dev server running, HTTP 200 confirmed
+
+Stage Summary:
+- All 3 reported console errors fixed
+- 16 proactive accessibility fixes applied (11 DialogDescription + 2 SheetDescription + 3 HTML nesting)
+- No remaining console errors expected

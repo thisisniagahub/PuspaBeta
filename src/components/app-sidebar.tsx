@@ -6,7 +6,7 @@ import { useAppStore, type UserRole } from '@/stores/app-store'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import {
@@ -624,6 +624,7 @@ export function AppSidebar() {
       {!isDesktop && (
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
           <SheetContent side="left" className="w-[280px] p-0" aria-describedby={undefined}>
+            <SheetTitle className="sr-only">Menu Navigasi</SheetTitle>
             <SidebarContent onNavigate={setView} onClose={() => setSidebarOpen(false)} />
           </SheetContent>
         </Sheet>

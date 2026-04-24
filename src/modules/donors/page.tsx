@@ -8,12 +8,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'
 import { Users, Search, Plus, Edit, Trash2, Eye, Heart, DollarSign, UserCheck } from 'lucide-react'
 
 interface Donor {
@@ -144,7 +144,7 @@ export default function DonorsPage() {
 
       {/* View Sheet */}
       <Sheet open={!!viewDonor} onOpenChange={() => setViewDonor(null)}>
-        <SheetContent><SheetHeader><SheetTitle>Profil Penderma</SheetTitle></SheetHeader>
+        <SheetContent><SheetHeader><SheetTitle>Profil Penderma</SheetTitle><SheetDescription className="sr-only">Maklumat terperinci profil penderma</SheetDescription></SheetHeader>
           {viewDonor && <div className="mt-6 space-y-4">
             <div className="space-y-2">
               <p className="text-lg font-bold">{viewDonor.name}</p>
@@ -163,7 +163,7 @@ export default function DonorsPage() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>{editing ? 'Edit Penderma' : 'Tambah Penderma Baharu'}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? 'Edit Penderma' : 'Tambah Penderma Baharu'}</DialogTitle><DialogDescription className="sr-only">Borang untuk menambah atau mengedit penderma</DialogDescription></DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2"><Label>Nama *</Label><Input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} /></div>
             <div className="grid grid-cols-2 gap-4">

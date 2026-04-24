@@ -8,12 +8,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'
 import { FileText, Search, Plus, Edit, Trash2, Eye, Clock, AlertCircle, CheckCircle2 } from 'lucide-react'
 
 interface Case {
@@ -151,7 +151,7 @@ export default function CasesPage() {
       </div>
 
       <Sheet open={!!viewCase} onOpenChange={() => setViewCase(null)}>
-        <SheetContent><SheetHeader><SheetTitle>Butiran Kes</SheetTitle></SheetHeader>
+        <SheetContent><SheetHeader><SheetTitle>Butiran Kes</SheetTitle><SheetDescription className="sr-only">Maklumat terperinci kes bantuan</SheetDescription></SheetHeader>
           {viewCase && <div className="mt-6 space-y-4">
             <div><p className="text-lg font-bold">{viewCase.title}</p><p className="text-sm text-muted-foreground">{viewCase.caseNumber}</p></div>
             <div className="flex gap-2"><Badge className={statusColor[viewCase.status] || ''}>{viewCase.status}</Badge><Badge variant="outline">{viewCase.priority}</Badge><Badge variant="outline">{viewCase.category}</Badge></div>
@@ -165,7 +165,7 @@ export default function CasesPage() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>{editing ? 'Edit Kes' : 'Tambah Kes Baharu'}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? 'Edit Kes' : 'Tambah Kes Baharu'}</DialogTitle><DialogDescription className="sr-only">Borang untuk menambah atau mengedit kes</DialogDescription></DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2"><Label>Tajuk *</Label><Input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} /></div>
             <div className="grid gap-2"><Label>Penerangan</Label><Textarea value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} /></div>

@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Progress } from '@/components/ui/progress'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -173,7 +173,7 @@ export default function CompliancePage() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>Tambah Item Compliance</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>Tambah Item Compliance</DialogTitle><DialogDescription className="sr-only">Borang untuk menambah item pematuhan baharu</DialogDescription></DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2"><Label>Kategori</Label><Select value={form.category} onValueChange={v => setForm(p => ({ ...p, category: v }))}><SelectTrigger /><SelectContent>{Object.entries(categoryLabel).map(([k,v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}</SelectContent></Select></div>
             <div className="grid gap-2"><Label>Item *</Label><Input value={form.item} onChange={e => setForm(p => ({ ...p, item: e.target.value }))} /></div>

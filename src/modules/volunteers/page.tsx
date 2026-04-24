@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -131,7 +131,7 @@ export default function VolunteersPage() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>{editing ? 'Edit Sukarelawan' : 'Tambah Sukarelawan Baharu'}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? 'Edit Sukarelawan' : 'Tambah Sukarelawan Baharu'}</DialogTitle><DialogDescription className="sr-only">Borang untuk menambah atau mengedit sukarelawan</DialogDescription></DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2"><Label>Nama *</Label><Input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} /></div>
             <div className="grid grid-cols-2 gap-4">

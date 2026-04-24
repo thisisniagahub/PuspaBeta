@@ -347,9 +347,9 @@ function VisiTab() {
           </p>
         </div>
         <CardContent className="p-4">
-          <p className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground">
             <strong>Misi:</strong> Memberi kemahiran teknologi AI kepada golongan asnaf supaya mereka boleh menjana pendapatan sendiri melalui pembangunan aplikasi web menggunakan AI — <Badge variant="secondary" className="ml-1">PERCUMA & DITAJA SEPENUHNYA</Badge>
-          </p>
+          </div>
         </CardContent>
       </Card>
 
