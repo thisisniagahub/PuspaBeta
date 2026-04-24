@@ -17,7 +17,7 @@ export async function POST(
     const body = await req.json()
     const parsed = decisionSchema.safeParse(body)
     if (!parsed.success) {
-      return NextResponse.json({ success: false, error: parsed.error.errors.map(e => e.message).join(', ') }, { status: 400 })
+      return NextResponse.json({ success: false, error: parsed.error.issues.map(e => e.message).join(', ') }, { status: 400 })
     }
 
     const { decision, decidedBy, reason } = parsed.data

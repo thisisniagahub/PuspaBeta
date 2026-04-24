@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const parsed = certificateSchema.safeParse(body)
     if (!parsed.success) {
-      return NextResponse.json({ success: false, error: parsed.error.errors.map(e => e.message).join(', ') }, { status: 400 })
+      return NextResponse.json({ success: false, error: parsed.error.issues.map(e => e.message).join(', ') }, { status: 400 })
     }
 
     const data = parsed.data

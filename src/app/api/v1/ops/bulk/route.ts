@@ -6,7 +6,7 @@ const bulkSchema = z.object({
   operation: z.enum(['delete', 'update_status', 'assign', 'export']),
   entity: z.string().min(1, 'Entiti diperlukan'),
   ids: z.array(z.string()).min(1, 'Sekurang-kurangnya satu ID diperlukan'),
-  data: z.record(z.unknown()).optional(),
+  data: z.record(z.string(), z.unknown()).optional(),
 })
 
 export async function POST(req: NextRequest) {
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const parsed = bulkSchema.safeParse(body)
     if (!parsed.success) {
-      return NextResponse.json({ success: false, error: parsed.error.errors.map(e => e.message).join(', ') }, { status: 400 })
+      return NextResponse.json({ success: false, error: parsed.error.issues.map(e => e.message).join(', ') }, { status: 400 })
     }
 
     const { operation, entity, ids, data } = parsed.data
