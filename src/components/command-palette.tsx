@@ -15,7 +15,10 @@ import {
   CreditCard, Shield, FileBarChart, Activity, Bot,
   UserCheck, FolderOpen, ScanFace, Smartphone, BookOpen,
   CalendarDays, Package, Zap, Cpu, Plug, Globe,
-  Terminal, Wrench, ArrowRightLeft, LayoutGrid
+  Terminal, Wrench, ArrowRightLeft, LayoutGrid,
+  Settings2, Siren, Bell, MessageSquare, UserPlus,
+  BarChart3, Brain, ShieldCheck, GraduationCap,
+  Radio, Waypoints, Database, Cog
 } from 'lucide-react'
 import type { ViewId } from '@/types'
 
@@ -37,10 +40,11 @@ type PaletteGroup = {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// Palette items — 4 groups with bilingual keywords (Malay + English)
+// Palette items — synced with sidebar groups, bilingual keywords (BM + EN)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const PALETTE_GROUPS: PaletteGroup[] = [
+  // ── 1. UTAMA ─────────────────────────────────────────────────────────────
   {
     heading: 'Utama / Main',
     items: [
@@ -74,8 +78,10 @@ const PALETTE_GROUPS: PaletteGroup[] = [
       },
     ],
   },
+
+  // ── 2. KEWANGAN ──────────────────────────────────────────────────────────
   {
-    heading: 'Kewangan & Operasi / Finance & Ops',
+    heading: 'Kewangan / Finance',
     items: [
       {
         id: 'donations',
@@ -98,6 +104,13 @@ const PALETTE_GROUPS: PaletteGroup[] = [
         keywords: ['penderma', 'donor', 'donors', 'penyumbang', 'contributor'],
         roles: ['admin', 'developer'],
       },
+    ],
+  },
+
+  // ── 3. OPERASI ───────────────────────────────────────────────────────────
+  {
+    heading: 'Operasi / Operations',
+    items: [
       {
         id: 'activities',
         label: 'Aktiviti',
@@ -116,7 +129,7 @@ const PALETTE_GROUPS: PaletteGroup[] = [
         id: 'sedekah-jumaat',
         label: 'Sedekah Jumaat',
         icon: Package,
-        keywords: ['sedekah', 'jumaat', 'friday', 'charity', 'Friday charity', 'derma jumaat'],
+        keywords: ['sedekah', 'jumaat', 'friday', 'charity', 'friday charity', 'derma jumaat'],
         roles: ['staff', 'admin', 'developer'],
       },
       {
@@ -135,9 +148,32 @@ const PALETTE_GROUPS: PaletteGroup[] = [
       },
     ],
   },
+
+  // ── 4. KEUSAHAWANAN ─────────────────────────────────────────────────────
   {
-    heading: 'Compliance & Laporan / Compliance & Reports',
+    heading: 'Keusahawanan / Entrepreneurship',
     items: [
+      {
+        id: 'kelas-ai',
+        label: 'Kelas AI & Vibe Coding',
+        icon: GraduationCap,
+        keywords: ['kelas', 'ai', 'vibe', 'coding', 'class', 'course', 'kursus', 'programming', 'entrepreneur', 'usahawan'],
+        roles: ['staff', 'admin', 'developer'],
+      },
+    ],
+  },
+
+  // ── 5. PENTADBIRAN ───────────────────────────────────────────────────────
+  {
+    heading: 'Pentadbiran / Administration',
+    items: [
+      {
+        id: 'admin',
+        label: 'Pentadbiran',
+        icon: Settings2,
+        keywords: ['admin', 'pentadbiran', 'administration', 'pengurusan', 'management', 'sistem'],
+        roles: ['admin', 'developer'],
+      },
       {
         id: 'compliance',
         label: 'Compliance',
@@ -166,25 +202,101 @@ const PALETTE_GROUPS: PaletteGroup[] = [
         keywords: ['tapsecure', 'security', 'keselamatan', 'device', 'peranti', 'biometric'],
         roles: ['admin', 'developer'],
       },
+      {
+        id: 'audit-trail',
+        label: 'Jejak Audit',
+        icon: ShieldCheck,
+        keywords: ['audit', 'trail', 'jejak', 'log', 'history', 'sejarah', 'tracking'],
+        roles: ['admin', 'developer'],
+      },
     ],
   },
+
+  // ── 6. AI & AUTOMASI ─────────────────────────────────────────────────────
   {
     heading: 'AI & Automasi / AI & Automation',
     items: [
+      // Pengurusan Cerdas
       {
         id: 'ops-conductor',
         label: 'Ops Conductor',
-        icon: Zap,
-        keywords: ['ops', 'conductor', 'operasi', 'workflow', 'orkestrasi', 'orchestration'],
+        icon: Cog,
+        keywords: ['ops', 'conductor', 'operasi', 'workflow', 'orkestrasi', 'orchestration', 'pengurusan cerdas'],
         roles: ['admin', 'developer'],
       },
       {
         id: 'ai',
         label: 'Alat AI',
         icon: Bot,
-        keywords: ['ai', 'artificial', 'intelligence', 'kecerdasan', 'chatbot', 'assistant', 'pembantu'],
+        keywords: ['ai', 'artificial', 'intelligence', 'kecerdasan', 'chatbot', 'assistant', 'pembantu', 'alat'],
         roles: ['staff', 'admin', 'developer'],
       },
+      {
+        id: 'notifications',
+        label: 'Notifikasi',
+        icon: Bell,
+        keywords: ['notifikasi', 'notification', 'alert', 'amaran', 'pemberitahuan', 'push'],
+        roles: ['admin', 'developer'],
+      },
+      {
+        id: 'multi-channel',
+        label: 'Berbilang Saluran',
+        icon: MessageSquare,
+        keywords: ['saluran', 'channel', 'whatsapp', 'telegram', 'multichannel', 'berbilang', 'messaging'],
+        roles: ['admin', 'developer'],
+      },
+      // Automasi & Ramalan
+      {
+        id: 'onboarding',
+        label: 'Onboarding Bot',
+        icon: UserPlus,
+        keywords: ['onboarding', 'bot', 'pendaftaran', 'registration', 'new member', 'ahli baru', 'automasi'],
+        roles: ['admin', 'developer'],
+      },
+      {
+        id: 'automation-rules',
+        label: 'Peraturan Automasi',
+        icon: Zap,
+        keywords: ['automation', 'automasi', 'rules', 'peraturan', 'auto', 'trigger', 'pemicu'],
+        roles: ['admin', 'developer'],
+      },
+      {
+        id: 'triage',
+        label: 'Enjin Triage',
+        icon: Siren,
+        keywords: ['triage', 'enjin', 'engine', 'priority', 'keutamaan', 'sort', 'tapis'],
+        roles: ['admin', 'developer'],
+      },
+      {
+        id: 'predictive',
+        label: 'Analisis Ramalan',
+        icon: BarChart3,
+        keywords: ['predictive', 'ramalan', 'forecast', 'analytics', 'analisis', 'prediction', 'trend'],
+        roles: ['admin', 'developer'],
+      },
+      // Ejen & Kemahiran
+      {
+        id: 'skills',
+        label: 'Pasar Kemahiran',
+        icon: Waypoints,
+        keywords: ['skills', 'kemahiran', 'marketplace', 'pasar', 'clawhub', 'plugins', 'ability'],
+        roles: ['admin', 'developer'],
+      },
+      {
+        id: 'agent-memory',
+        label: 'Memori Ejen',
+        icon: Brain,
+        keywords: ['memory', 'memori', 'agent', 'ejen', 'persistent', 'context', 'konteks'],
+        roles: ['admin', 'developer'],
+      },
+      {
+        id: 'multi-agent',
+        label: 'Berbilang Ejen',
+        icon: LayoutGrid,
+        keywords: ['multi', 'agent', 'berbilang', 'ejen', 'routing', 'orchestration', 'multiple'],
+        roles: ['admin', 'developer'],
+      },
+      // OpenClaw
       {
         id: 'openclaw-mcp',
         label: 'Pelayan MCP',
@@ -216,7 +328,7 @@ const PALETTE_GROUPS: PaletteGroup[] = [
       {
         id: 'openclaw-agents',
         label: 'Ejen AI',
-        icon: LayoutGrid,
+        icon: Radio,
         keywords: ['agents', 'agent', 'ejen', 'ai agent', 'autonomous', 'openclaw'],
         roles: ['developer'],
       },
@@ -230,10 +342,17 @@ const PALETTE_GROUPS: PaletteGroup[] = [
       {
         id: 'openclaw-automation',
         label: 'Automasi',
-        icon: Zap,
+        icon: Database,
         keywords: ['automation', 'automasi', 'auto', 'schedule', 'jadual', 'cron', 'openclaw'],
         roles: ['developer'],
       },
+    ],
+  },
+
+  // ── 7. BANTUAN ───────────────────────────────────────────────────────────
+  {
+    heading: 'Bantuan / Help',
+    items: [
       {
         id: 'docs',
         label: 'Panduan',

@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { BookOpen, Settings, Users, Heart, DollarSign, Shield, FileText, Bot, Terminal, Puzzle, Radio, Cpu, Workflow } from 'lucide-react'
+import { BookOpen, Users, Heart, DollarSign, Shield, FileText, Bot, Terminal, Cpu } from 'lucide-react'
 
 const sections = [
   { title: 'Pengenalan PUSPA', icon: BookOpen, content: 'PUSPA (Pertubuhan Urus Peduli Asnaf) adalah sistem pengurusan NGO yang komprehensif untuk menguruskan ahli asnaf, donasi, kes bantuan, dan program organisasi. Sistem ini direka khas untuk memenuhi keperluan pertubuhan di Malaysia dengan pematuhan compliance ROS, LHDN, dan BNM.' },

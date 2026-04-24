@@ -9,11 +9,11 @@ import { Separator } from '@/components/ui/separator'
 import {
   GraduationCap, Rocket, Target, Users, Award, Building2,
   Calculator, TrendingUp, Settings, Calendar, RefreshCw,
-  Mail, Link2, Sparkles, Code2, Globe, Briefcase,
+  Mail, Link2, Sparkles, Globe, Briefcase,
   DollarSign, Heart, Star, Trophy, Clock, BookOpen,
-  Monitor, Wifi, Coffee, Presentation, ChevronRight,
+  Monitor, Wifi, Coffee, ChevronRight,
   CheckCircle2, ArrowUpRight, Lightbulb, UserCheck,
-  FileText, LayoutGrid, Smartphone, BarChart3
+  LayoutGrid, Smartphone, BarChart3
 } from 'lucide-react'
 
 // ═══════════════════════════════════════════════════════════════════════════════

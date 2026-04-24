@@ -64,9 +64,20 @@ export default function AutomationRulesPage() {
   }, [])
 
   const toggleRule = (id: string) => {
-    setRules(prev => prev.map(r => r.id === id ? { ...r, enabled: !r.enabled } : r))
-    const rule = rules.find(r => r.id === id)
-    toast.success(rule?.enabled ? `Peraturan "${rule.name}" dinyahaktifkan` : `Peraturan "${rule.name}" diaktifkan`)
+    let wasEnabled = false
+    let ruleName = ''
+    setRules(prev => {
+      const updated = prev.map(r => {
+        if (r.id === id) {
+          wasEnabled = r.enabled
+          ruleName = r.name
+          return { ...r, enabled: !r.enabled }
+        }
+        return r
+      })
+      return updated
+    })
+    toast.success(wasEnabled ? `Peraturan "${ruleName}" dinyahaktifkan` : `Peraturan "${ruleName}" diaktifkan`)
   }
 
   const handleAddRule = async () => {

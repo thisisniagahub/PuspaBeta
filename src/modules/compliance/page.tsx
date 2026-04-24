@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { api } from '@/lib/api'
+import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -185,4 +186,4 @@ export default function CompliancePage() {
   )
 }
 
-function cn(...classes: (string | boolean | undefined)[]) { return classes.filter(Boolean).join(' ') }
+

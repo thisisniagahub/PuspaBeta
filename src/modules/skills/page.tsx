@@ -90,9 +90,20 @@ export default function SkillsPage() {
   }, [])
 
   const toggleSkill = (id: string) => {
-    setInstalled(prev => prev.map(s => s.id === id ? { ...s, enabled: !s.enabled } : s))
-    const skill = installed.find(s => s.id === id)
-    toast.success(skill?.enabled ? `"${skill.name}" dinyahaktifkan` : `"${skill.name}" diaktifkan`)
+    let wasEnabled = false
+    let skillName = ''
+    setInstalled(prev => {
+      const updated = prev.map(s => {
+        if (s.id === id) {
+          wasEnabled = s.enabled
+          skillName = s.name
+          return { ...s, enabled: !s.enabled }
+        }
+        return s
+      })
+      return updated
+    })
+    toast.success(wasEnabled ? `"${skillName}" dinyahaktifkan` : `"${skillName}" diaktifkan`)
   }
 
   const installSkill = (id: string) => {

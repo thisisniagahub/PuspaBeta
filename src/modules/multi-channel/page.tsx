@@ -99,11 +99,21 @@ export default function MultiChannelPage() {
   )
 
   const toggleConnection = (id: string) => {
-    setChannelConfigs(prev => prev.map(c =>
-      c.id === id ? { ...c, connected: !c.connected, status: c.connected ? 'Terputus' : 'Aktif' } : c
-    ))
-    const cfg = channelConfigs.find(c => c.id === id)
-    toast.success(cfg?.connected ? `${cfg.name} terputus` : `${cfg?.name} disambung`)
+    let wasConnected = false
+    let channelName = ''
+    setChannelConfigs(prev => {
+      const updated = prev.map(c => {
+        if (c.id === id) {
+          wasConnected = c.connected
+          channelName = c.name
+          return { ...c, connected: !c.connected, status: c.connected ? 'Terputus' : 'Aktif' }
+        }
+        return c
+      })
+      return updated
+    })
+    // Use the value captured inside setState (before toggle)
+    toast.success(wasConnected ? `${channelName} terputus` : `${channelName} disambung`)
   }
 
   if (loading) return (
