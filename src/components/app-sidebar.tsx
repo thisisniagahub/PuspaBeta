@@ -16,7 +16,8 @@ import {
   CalendarDays, Package, ChevronLeft, ChevronRight, Menu,
   Cpu, Plug, Globe, Terminal, Wrench, Zap,
   ArrowRightLeft, LayoutGrid, Siren, Bell, MessageSquare,
-  UserPlus, BarChart3, Brain, ShieldCheck, GraduationCap
+  UserPlus, BarChart3, Brain, ShieldCheck, GraduationCap,
+  Settings2, Radio, Waypoints, Database, Cog
 } from 'lucide-react'
 import type { ViewId } from '@/types'
 
@@ -33,10 +34,19 @@ type NavItem = {
   roles: UserRole[]
 }
 
+/** A sub-section within a group — rendered with its own mini-header */
+type NavSubSection = {
+  label: string
+  /** Short badge shown collapsed, e.g. "OC" for OpenClaw */
+  badge?: string
+  items: NavItem[]
+}
+
 type NavGroup = {
   title: string
-  items: NavItem[]
-  subGroup?: string
+  items?: NavItem[]
+  /** Structured sub-sections — if provided, items is ignored */
+  sections?: NavSubSection[]
   roles: UserRole[]
 }
 
@@ -53,10 +63,11 @@ const ROLE_CONFIG: Record<UserRole, { label: string; description: string }> = {
 const ROLE_CYCLE: UserRole[] = ['staff', 'admin', 'developer']
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// Navigation groups — role-based filtering
+// Navigation groups — reorganised by function, not by development phase
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ALL_GROUPS: NavGroup[] = [
+  // ── 1. UTAMA ─────────────────────────────────────────────────────────────
   {
     title: 'Utama',
     roles: ['staff', 'admin', 'developer'],
@@ -67,6 +78,8 @@ const ALL_GROUPS: NavGroup[] = [
       { id: 'programmes', label: 'Program', icon: Heart, roles: ['staff', 'admin', 'developer'] },
     ],
   },
+
+  // ── 2. KEWANGAN ──────────────────────────────────────────────────────────
   {
     title: 'Kewangan',
     roles: ['staff', 'admin', 'developer'],
@@ -76,6 +89,8 @@ const ALL_GROUPS: NavGroup[] = [
       { id: 'donors', label: 'Penderma', icon: ArrowRightLeft, roles: ['admin', 'developer'] },
     ],
   },
+
+  // ── 3. OPERASI ───────────────────────────────────────────────────────────
   {
     title: 'Operasi',
     roles: ['staff', 'admin', 'developer'],
@@ -87,16 +102,8 @@ const ALL_GROUPS: NavGroup[] = [
       { id: 'documents', label: 'Dokumen', icon: FolderOpen, roles: ['staff', 'admin', 'developer'] },
     ],
   },
-  {
-    title: 'Compliance & Laporan',
-    roles: ['admin', 'developer'],
-    items: [
-      { id: 'compliance', label: 'Compliance', icon: Shield, roles: ['admin', 'developer'] },
-      { id: 'reports', label: 'Laporan Kewangan', icon: FileBarChart, roles: ['admin', 'developer'] },
-      { id: 'ekyc', label: 'eKYC', icon: ScanFace, roles: ['admin', 'developer'] },
-      { id: 'tapsecure', label: 'TapSecure', icon: Smartphone, roles: ['admin', 'developer'] },
-    ],
-  },
+
+  // ── 4. KEUSAHAWANAN ─────────────────────────────────────────────────────
   {
     title: 'Keusahawanan',
     roles: ['staff', 'admin', 'developer'],
@@ -104,56 +111,73 @@ const ALL_GROUPS: NavGroup[] = [
       { id: 'kelas-ai', label: 'Kelas AI & Vibe Coding', icon: GraduationCap, roles: ['staff', 'admin', 'developer'] },
     ],
   },
+
+  // ── 5. PENTADBIRAN ───────────────────────────────────────────────────────
   {
-    title: 'Fasa 1 — Triage & Saluran',
+    title: 'Pentadbiran',
     roles: ['admin', 'developer'],
     items: [
-      { id: 'triage', label: 'Enjin Triage', icon: Siren, roles: ['admin', 'developer'] },
-      { id: 'notifications', label: 'Notifikasi', icon: Bell, roles: ['admin', 'developer'] },
-      { id: 'multi-channel', label: 'Berbilang Saluran', icon: MessageSquare, roles: ['admin', 'developer'] },
-    ],
-  },
-  {
-    title: 'Fasa 2 — Automasi & Ramalan',
-    roles: ['admin', 'developer'],
-    items: [
-      { id: 'onboarding', label: 'Onboarding', icon: UserPlus, roles: ['admin', 'developer'] },
-      { id: 'automation-rules', label: 'Peraturan Automasi', icon: Zap, roles: ['admin', 'developer'] },
-      { id: 'predictive', label: 'Analisis Ramalan', icon: BarChart3, roles: ['admin', 'developer'] },
-    ],
-  },
-  {
-    title: 'Fasa 3 — Ejen & Kemahiran',
-    roles: ['admin', 'developer'],
-    items: [
-      { id: 'skills', label: 'Pasar Kemahiran', icon: Package, roles: ['admin', 'developer'] },
-      { id: 'agent-memory', label: 'Memori Ejen', icon: Brain, roles: ['admin', 'developer'] },
-      { id: 'multi-agent', label: 'Berbilang Ejen', icon: LayoutGrid, roles: ['admin', 'developer'] },
-    ],
-  },
-  {
-    title: 'Fasa 4 — Audit & Transparansi',
-    roles: ['admin', 'developer'],
-    items: [
+      { id: 'admin', label: 'Pentadbiran', icon: Settings2, roles: ['admin', 'developer'] },
+      { id: 'compliance', label: 'Compliance', icon: Shield, roles: ['admin', 'developer'] },
+      { id: 'reports', label: 'Laporan Kewangan', icon: FileBarChart, roles: ['admin', 'developer'] },
+      { id: 'ekyc', label: 'eKYC', icon: ScanFace, roles: ['admin', 'developer'] },
+      { id: 'tapsecure', label: 'TapSecure', icon: Smartphone, roles: ['admin', 'developer'] },
       { id: 'audit-trail', label: 'Jejak Audit', icon: ShieldCheck, roles: ['admin', 'developer'] },
     ],
   },
+
+  // ── 6. AI & AUTOMASI ─────────────────────────────────────────────────────
+  // Organised into 4 functional sub-sections instead of "Fasa 1-4" labels
   {
     title: 'AI & Automasi',
-    subGroup: 'AI Ops (Internal)',
     roles: ['staff', 'admin', 'developer'],
-    items: [
-      { id: 'ops-conductor', label: 'Ops Conductor', icon: Zap, roles: ['admin', 'developer'] },
-      { id: 'ai', label: 'Alat AI', icon: Bot, roles: ['staff', 'admin', 'developer'] },
-      { id: 'openclaw-mcp', label: 'Pelayan MCP', icon: Cpu, roles: ['developer'] },
-      { id: 'openclaw-plugins', label: 'Sambungan', icon: Plug, roles: ['developer'] },
-      { id: 'openclaw-integrations', label: 'Gateway & Channel', icon: Globe, roles: ['developer'] },
-      { id: 'openclaw-terminal', label: 'Console Operator', icon: Terminal, roles: ['developer'] },
-      { id: 'openclaw-agents', label: 'Ejen AI', icon: LayoutGrid, roles: ['developer'] },
-      { id: 'openclaw-models', label: 'Enjin Model', icon: Wrench, roles: ['developer'] },
-      { id: 'openclaw-automation', label: 'Automasi', icon: Zap, roles: ['developer'] },
+    sections: [
+      {
+        label: 'Pengurusan Cerdas',
+        badge: 'AI',
+        items: [
+          { id: 'ops-conductor', label: 'Ops Conductor', icon: Cog, roles: ['admin', 'developer'] },
+          { id: 'ai', label: 'Alat AI', icon: Bot, roles: ['staff', 'admin', 'developer'] },
+          { id: 'notifications', label: 'Notifikasi', icon: Bell, roles: ['admin', 'developer'] },
+          { id: 'multi-channel', label: 'Berbilang Saluran', icon: MessageSquare, roles: ['admin', 'developer'] },
+        ],
+      },
+      {
+        label: 'Automasi & Ramalan',
+        badge: 'AR',
+        items: [
+          { id: 'onboarding', label: 'Onboarding Bot', icon: UserPlus, roles: ['admin', 'developer'] },
+          { id: 'automation-rules', label: 'Peraturan Automasi', icon: Zap, roles: ['admin', 'developer'] },
+          { id: 'triage', label: 'Enjin Triage', icon: Siren, roles: ['admin', 'developer'] },
+          { id: 'predictive', label: 'Analisis Ramalan', icon: BarChart3, roles: ['admin', 'developer'] },
+        ],
+      },
+      {
+        label: 'Ejen & Kemahiran',
+        badge: 'EK',
+        items: [
+          { id: 'skills', label: 'Pasar Kemahiran', icon: Waypoints, roles: ['admin', 'developer'] },
+          { id: 'agent-memory', label: 'Memori Ejen', icon: Brain, roles: ['admin', 'developer'] },
+          { id: 'multi-agent', label: 'Berbilang Ejen', icon: LayoutGrid, roles: ['admin', 'developer'] },
+        ],
+      },
+      {
+        label: 'OpenClaw (Developer)',
+        badge: 'OC',
+        items: [
+          { id: 'openclaw-mcp', label: 'Pelayan MCP', icon: Cpu, roles: ['developer'] },
+          { id: 'openclaw-plugins', label: 'Sambungan', icon: Plug, roles: ['developer'] },
+          { id: 'openclaw-integrations', label: 'Gateway & Channel', icon: Globe, roles: ['developer'] },
+          { id: 'openclaw-terminal', label: 'Console Operator', icon: Terminal, roles: ['developer'] },
+          { id: 'openclaw-agents', label: 'Ejen AI', icon: Radio, roles: ['developer'] },
+          { id: 'openclaw-models', label: 'Enjin Model', icon: Wrench, roles: ['developer'] },
+          { id: 'openclaw-automation', label: 'Automasi', icon: Database, roles: ['developer'] },
+        ],
+      },
     ],
   },
+
+  // ── 7. BANTUAN ───────────────────────────────────────────────────────────
   {
     title: 'Bantuan',
     roles: ['staff', 'admin', 'developer'],
@@ -163,15 +187,35 @@ const ALL_GROUPS: NavGroup[] = [
   },
 ]
 
-/** Filter groups + items based on current role */
+// ═══════════════════════════════════════════════════════════════════════════════
+// Helpers
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Filter groups + items/sections based on current role */
 function getVisibleGroups(role: UserRole): NavGroup[] {
   return ALL_GROUPS
     .filter((g) => g.roles.includes(role))
-    .map((g) => ({
-      ...g,
-      items: g.items.filter((item) => item.roles.includes(role)),
-    }))
-    .filter((g) => g.items.length > 0)
+    .map((g) => {
+      if (g.sections) {
+        // Filter items within each section
+        const filteredSections = g.sections
+          .map((s) => ({
+            ...s,
+            items: s.items.filter((item) => item.roles.includes(role)),
+          }))
+          .filter((s) => s.items.length > 0)
+        return { ...g, sections: filteredSections }
+      }
+      // Flat items
+      return {
+        ...g,
+        items: g.items?.filter((item) => item.roles.includes(role)),
+      }
+    })
+    .filter((g) => {
+      if (g.sections) return g.sections.length > 0
+      return (g.items?.length ?? 0) > 0
+    })
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -283,7 +327,7 @@ function NavItemButton({
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// Section / Sub-group labels
+// Section / Sub-section labels
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function NavSectionLabel({ title, collapsed }: { title: string; collapsed: boolean }) {
@@ -297,14 +341,14 @@ function NavSectionLabel({ title, collapsed }: { title: string; collapsed: boole
   )
 }
 
-function NavSubGroupLabel({ label, collapsed }: { label: string; collapsed: boolean }) {
+function NavSubSectionLabel({ label, badge, collapsed }: { label: string; badge?: string; collapsed: boolean }) {
   if (collapsed) {
     return (
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <div className="flex items-center justify-center py-1.5">
             <div className="h-5 w-5 rounded-md bg-muted/60 flex items-center justify-center">
-              <span className="text-[8px] font-bold text-muted-foreground">OC</span>
+              <span className="text-[8px] font-bold text-muted-foreground">{badge || label.slice(0, 2).toUpperCase()}</span>
             </div>
           </div>
         </TooltipTrigger>
@@ -419,7 +463,7 @@ function SidebarFooter({ collapsed }: { collapsed: boolean }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// NavGroupRenderer — One section of nav items
+// NavGroupRenderer — One section of nav items (supports sub-sections)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function NavGroupRenderer({
@@ -435,21 +479,51 @@ function NavGroupRenderer({
   collapsed: boolean
   isLastGroup: boolean
 }) {
+  // Flatten all items for counting / iteration
+  const allItems: NavItem[] = group.sections
+    ? group.sections.flatMap((s) => s.items)
+    : (group.items ?? [])
+
+  // If no items after role filtering, render nothing
+  if (allItems.length === 0) return null
+
   return (
     <div className={cn(collapsed ? 'px-2' : 'px-2.5')}>
       <NavSectionLabel title={group.title} collapsed={collapsed} />
-      {group.subGroup && <NavSubGroupLabel label={group.subGroup} collapsed={collapsed} />}
-      <div className="flex flex-col gap-0.5">
-        {group.items.map((item) => (
-          <NavItemButton
-            key={item.id}
-            item={item}
-            isActive={currentView === item.id}
-            onClick={() => onNavigate(item.id)}
-            collapsed={collapsed}
-          />
-        ))}
-      </div>
+
+      {/* Flat items (no sub-sections) */}
+      {group.items && (
+        <div className="flex flex-col gap-0.5">
+          {group.items.map((item) => (
+            <NavItemButton
+              key={item.id}
+              item={item}
+              isActive={currentView === item.id}
+              onClick={() => onNavigate(item.id)}
+              collapsed={collapsed}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Structured sub-sections */}
+      {group.sections && group.sections.map((section) => (
+        <div key={section.label}>
+          <NavSubSectionLabel label={section.label} badge={section.badge} collapsed={collapsed} />
+          <div className="flex flex-col gap-0.5">
+            {section.items.map((item) => (
+              <NavItemButton
+                key={item.id}
+                item={item}
+                isActive={currentView === item.id}
+                onClick={() => onNavigate(item.id)}
+                collapsed={collapsed}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+
       {!isLastGroup && (
         <div className={cn('my-2 transition-all duration-300', collapsed ? 'mx-auto w-6' : 'w-full')}>
           <Separator className="bg-border/40" />
